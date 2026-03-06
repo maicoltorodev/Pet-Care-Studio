@@ -1,405 +1,163 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-background: oklch(0.08 0.01 200);
-  /* Deeper, pitch-black cinematic midnight */
-  --color-foreground: oklch(0.98 0 0);
-  /* Pure crisp white */
+  /* Dynamic Design System Tokens */
+  --color-background: #050505;
+  --color-foreground: #ffffff;
 
-  /* Cards with higher contrast */
-  --color-card: oklch(0.14 0.02 200);
-  --color-card-foreground: oklch(0.98 0 0);
+  --color-primary: #2dd4bf;
+  --color-primary-foreground: #ffffff;
 
-  --color-popover: oklch(0.15 0.02 200);
-  --color-popover-foreground: oklch(0.98 0 0);
+  --color-card: rgba(13, 13, 13, 0.7);
+  --color-card-border: rgba(255, 255, 255, 0.08);
 
-  /* Primary: Professional deep teal/blue (#1c7184) */
-  --color-primary: #1c7184;
-  --color-primary-foreground: oklch(0.98 0 0);
+  --color-admin-danger: #f43f5e;
+  --color-admin-warning: #f59e0b;
+  --color-admin-success: #10b981;
 
-  /* Secondary: Subtle, muted metallic tone */
-  --color-secondary: oklch(0.20 0.02 200);
-  --color-secondary-foreground: oklch(0.90 0 0);
+  --font-sans: 'Inter', 'Outfit', system-ui, sans-serif;
 
-  /* Muted texts for descriptions */
-  --color-muted: oklch(0.25 0.03 200);
-  --color-muted-foreground: oklch(0.75 0.02 200);
-
-  /* Accent: Muted supportive teal/cyan to match the new primary */
-  --color-accent: oklch(0.65 0.08 215);
-  --color-accent-foreground: oklch(0.98 0 0);
-
-  --color-destructive: oklch(0.5 0.2 25);
-  --color-destructive-foreground: oklch(0.98 0.005 60);
-
-  /* Borders more prominent for better day contrast */
-  --color-border: oklch(0.30 0.03 200);
-  --color-input: oklch(0.25 0.02 200);
-  --color-ring: oklch(0.80 0.15 80);
-
-  --radius-sm: calc(0.75rem - 2px);
-  --radius-md: 0.75rem;
-  --radius-lg: calc(0.75rem + 2px);
-  --radius-xl: calc(0.75rem + 4px);
-
-  --font-sans: var(--font-lexend), ui-sans-serif, system-ui;
-  --font-serif: var(--font-outfit), sans-serif;
-
-  --animate-float: float 6s ease-in-out infinite;
-
-  @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-20px);
-    }
-  }
+  --radius-admin: 2.5rem;
+  --radius-admin-inner: 1.5rem;
 }
 
-:root {
-  --background: var(--color-background);
-  --foreground: var(--color-foreground);
-  --primary: var(--color-primary);
-  --secondary: var(--color-secondary);
-  --accent: var(--color-accent);
-  --muted: var(--color-muted);
-  --border: var(--color-border);
-  --ring: var(--color-ring);
-  --radius: 0.75rem;
-}
-
-/* Ocultamos el cursor original SOLO cuando el CustomCursor está activo y montado */
-@media (min-width: 1024px) {
-  body.has-custom-cursor {
-    cursor: none !important;
-  }
-
-  body.has-custom-cursor * {
-    cursor: none !important;
-  }
-
-  /* Restore cursor for Google Maps and specific containers if needed */
-  .map-container,
-  .map-container iframe,
-  .no-custom-cursor {
-    cursor: auto !important;
-  }
-}
-
+/* ── BASE RESET (Enterprise Standards) ─────────────────────────── */
 @layer base {
   * {
-    @apply border-border outline-ring/20 transition-colors duration-300;
+    @apply border-white/10 outline-none;
     font-style: normal !important;
-  }
-
-  html {
-    scroll-behavior: smooth;
+    /* Global anti-italic enforcement */
   }
 
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden;
+    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-serif tracking-tight text-foreground text-balance;
-  }
-
-  p {
-    @apply font-sans leading-relaxed text-muted-foreground;
-  }
-
-  /* Hide Scrollbars globally but keep functionality */
+  /* Full Hidden Scrollbar (No distraction architecture) */
   * {
-    -ms-overflow-style: none;
     scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
   }
 
   *::-webkit-scrollbar {
     display: none;
+    /* Chrome, Safari, Opera */
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* ── ADMIN SYSTEM v2 ────────────────────────────────────────── */
+@layer components {
 
-  /* Glassmorphism System - High Contrast */
-  .glass-card {
-    @apply bg-card/85 backdrop-blur-3xl border border-white/20;
-    box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.8);
-  }
-
-  .glass-card-hover {
-    @apply hover:bg-card hover:border-primary/50 transition-all duration-700 hover:shadow-primary/20;
-  }
-
-  /* Cinematic Design Elements */
-  .cinematic-section {
-    @apply relative py-24 md:py-32 overflow-hidden px-6;
-  }
-
-  .cinematic-heading-lg {
-    @apply font-serif text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.05] tracking-tighter;
-  }
-
-  .cinematic-heading-md {
-    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-medium leading-tight tracking-tight;
-  }
-
-  .luxury-badge {
-    @apply inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-secondary/40 border border-border/40 text-foreground text-[10px] font-black uppercase tracking-[0.3em] backdrop-blur-md;
-  }
-
-  .cinematic-glow {
-    @apply absolute rounded-full blur-[150px] pointer-events-none opacity-50 mix-blend-screen;
-  }
-
-  .cinematic-card {
-    @apply relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-card/90 backdrop-blur-2xl transition-all duration-700 hover:-translate-y-2;
-    box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.7);
-  }
-
-  .cinematic-card:hover {
-    box-shadow: 0 20px 80px -20px color-mix(in srgb, var(--color-primary), transparent 85%);
-  }
-
-  /* Overlay System */
-  .cinematic-vignette {
-    background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
-  }
-
-  .cinematic-gradient-overlay {
-    background: linear-gradient(to top, var(--background) 0%, transparent 50%, var(--background) 100%);
-  }
-
-  /* Image Effects */
-  .luxury-img {
-    @apply object-cover transition-all duration-1000 group-hover:scale-110 group-hover:brightness-110 grayscale-[30%] hover:grayscale-0;
-  }
-
-  /* Hide FAB when mobile menu is open */
-  .mobile-menu-open .whatsapp-fab {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: scale(0) !important;
-    transition: all 0.4s ease !important;
-  }
-
-  /* Patterns & Effects */
-  .facade-pattern {
-    background: linear-gradient(135deg,
-        oklch(0.35 0.15 200) 0%,
-        oklch(0.45 0.18 200) 25%,
-        oklch(0.25 0.12 210) 50%,
-        oklch(0.50 0.14 195) 75%,
-        oklch(0.40 0.16 205) 100%);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .floating-element {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  @keyframes scale-y {
-
-    0%,
-    100% {
-      transform: scaleY(0.4);
-    }
-
-    50% {
-      transform: scaleY(1);
-    }
-  }
-
-  .scroll-indicator-line {
-    animation: scale-y 2s ease-in-out infinite;
-  }
-
-  /* Cinematic Notification Flow Animation */
-  @keyframes notification-flow {
-    0% {
-      transform: translateX(100vw) scale(0.8);
-      opacity: 0;
-    }
-
-    15% {
-      transform: translateX(0) scale(1.05);
-      opacity: 1;
-    }
-
-    20% {
-      transform: translateX(0) scale(1);
-    }
-
-    85% {
-      transform: translateX(0) scale(1);
-      opacity: 1;
-    }
-
-    100% {
-      transform: translateX(-100vw) scale(0.9);
-      opacity: 0;
-    }
-  }
-
-  .animate-notification-flow {
-    animation: notification-flow 5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  }
-
-  /* ============================================================
-     ADMIN PANEL — DESIGN SYSTEM (Semantic Tokens)
-     Cambiar aquí afecta TODO el panel admin globalmente.
-     Nunca usar text-white/XX hardcodeado en componentes.
-  ============================================================ */
-
-  /* --- CONTAINER --- */
+  /* Fundamental Card Architecture */
   .admin-card {
-    @apply relative overflow-hidden rounded-[2.5rem] border border-white/20 bg-white/[0.06] backdrop-blur-3xl transition-all duration-300;
-    box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.8);
+    @apply relative overflow-hidden rounded-[2.5rem] bg-card border border-card-border backdrop-blur-3xl transition-all duration-500;
   }
 
-  /* --- INPUTS --- */
-  .admin-input {
-    @apply w-full bg-black/60 border border-white/15 rounded-2xl h-14 px-6 text-sm font-medium text-white/90 focus:text-white focus:border-white/30 focus-visible:ring-1 focus-visible:ring-primary/50 transition-all duration-200;
-    font-style: normal !important;
-  }
-
-  /* ── TYPOGRAPHY HIERARCHY ──────────────────────────────────
-     Change color/size here → changes every tab simultaneously
-  ─────────────────────────────────────────────────────────── */
-
-  /* H1 de sección — e.g. "Opiniones Atelier" */
+  /* Typography Hierarchy */
   .admin-title {
-    @apply font-black uppercase tracking-tight text-white;
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-style: normal !important;
+    @apply font-black tracking-tighter text-white uppercase;
   }
 
-  /* H2 de tarjeta — e.g. "Guía de Atención al Cliente" */
   .admin-section-title {
-    @apply text-base font-black uppercase tracking-[0.15em] text-white/80;
-    font-style: normal !important;
+    @apply text-sm font-black uppercase tracking-[0.3em] text-white/80;
   }
 
-  /* Texto descriptivo principal */
   .admin-body {
     @apply text-sm font-medium leading-relaxed text-white/55;
-    font-style: normal !important;
   }
 
-  /* Etiqueta de campo / metadato secundario */
   .admin-muted {
     @apply text-[10px] font-black uppercase tracking-[0.3em] text-white/40;
-    font-style: normal !important;
   }
 
-  /* Terciario / casi invisible — timestamps, sync info */
   .admin-dim {
     @apply text-[9px] font-black uppercase tracking-[0.4em] text-white/20;
-    font-style: normal !important;
   }
 
-  /* Número grande — capacidad, conteos, horas */
-  .admin-stat {
-    @apply font-black tracking-tighter text-white leading-none;
-    font-style: normal !important;
+  /* Input States */
+  .admin-input {
+    @apply h-14 w-full rounded-2xl bg-black/40 border border-white/[0.08] px-5 text-white placeholder:text-white/10 focus:border-primary/40 focus:bg-black/60 transition-all duration-300;
   }
 
-  /* ── LEGACY ALIASES (mantener compatibilidad mientras migramos) ── */
-  .admin-label {
-    @apply text-[10px] font-black uppercase tracking-[0.3em] text-white/50;
-    font-style: normal !important;
+  /* ── BUTTON ENGINE ────────────────────────────────────────── */
+  .admin-btn-base {
+    @apply flex items-center justify-center gap-2 h-12 rounded-xl font-black uppercase tracking-[0.2em] text-[11px] active:scale-95 transition-all duration-300 disabled:opacity-20 disabled:pointer-events-none;
   }
-
-  .admin-header-title {
-    @apply font-black uppercase tracking-tight text-white;
-    font-style: normal !important;
-  }
-
-  .admin-header-subtitle {
-    @apply text-[10px] font-black uppercase tracking-[0.4em] text-white/50;
-    font-style: normal !important;
-  }
-
-  /* ── BUTTONS ────────────────────────────────────────────────
-     Cambiar aquí = todos los botones del admin cambian
-  ─────────────────────────────────────────────────────────── */
 
   .admin-btn-primary {
-    @apply flex items-center justify-center gap-2 h-12 px-7 rounded-xl bg-primary text-white text-[11px] font-black uppercase tracking-[0.2em] hover:brightness-110 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none;
-    font-style: normal !important;
+    @apply admin-btn-base bg-primary text-white px-7 hover:brightness-110 hover:shadow-[0_0_20px_rgba(45, 212, 191, 0.3)];
   }
 
   .admin-btn-ghost {
-    @apply flex items-center justify-center gap-2 h-12 px-7 rounded-xl bg-white/[0.05] text-white/60 border border-white/10 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-white/[0.10] hover:text-white hover:border-white/20 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:pointer-events-none;
-    font-style: normal !important;
+    @apply admin-btn-base bg-white/[0.05] border border-white/10 text-white/60 px-7 hover:bg-white/[0.10] hover:text-white hover:border-white/20;
   }
 
   .admin-btn-danger {
-    @apply flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-white/[0.04] text-white/30 border border-white/[0.08] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/20 active:scale-95 transition-all duration-200 disabled:opacity-20 disabled:pointer-events-none;
-    font-style: normal !important;
+    @apply admin-btn-base bg-white/[0.04] border border-white/[0.08] text-white/30 px-6 hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/20 shadow-none;
   }
 
-  /* ── STATUS BADGES ─────────────────────────────────────────── */
-  /* ── base badge (usada solo como referencia, no en @apply) ── */
-  .admin-badge {
+  /* ── BADGE ENGINE ──────────────────────────────────────────── */
+  .admin-badge-base {
     @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
-    font-style: normal !important;
   }
 
-  /* Las variantes NO usan @apply admin-badge (Tailwind v4 no lo permite).
-     Cada una lleva los estilos base + sus tokens de color inlineados. */
   .admin-badge-primary {
-    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
-    @apply bg-primary/15 border-primary/30 text-primary;
-    font-style: normal !important;
+    @apply admin-badge-base bg-primary/10 border-primary/20 text-primary;
   }
 
   .admin-badge-warning {
-    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
-    @apply bg-amber-500/10 border-amber-500/25 text-amber-400;
-    font-style: normal !important;
+    @apply admin-badge-base bg-amber-500/10 border-amber-500/20 text-amber-400;
   }
 
   .admin-badge-success {
-    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
-    @apply bg-emerald-500/10 border-emerald-500/25 text-emerald-400;
-    font-style: normal !important;
+    @apply admin-badge-base bg-emerald-500/10 border-emerald-500/20 text-emerald-400;
   }
 
   .admin-badge-muted {
-    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
-    @apply bg-white/[0.04] border-white/10 text-white/40;
-    font-style: normal !important;
+    @apply admin-badge-base bg-white/[0.04] border-white/10 text-white/40;
   }
 
-  /* ── MISC ──────────────────────────────────────────────────── */
+  /* ── UTILITIES ────────────────────────────────────────────── */
   .admin-divider {
     @apply h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
   }
 
   .admin-pill {
     @apply inline-flex items-center gap-2 px-5 py-2 rounded-2xl bg-white/[0.04] border border-white/10 text-[10px] font-black uppercase tracking-[0.25em] text-white/40;
-    font-style: normal !important;
   }
 
-  .italic-none {
-    font-style: normal !important;
+  .glass-premium {
+    @apply bg-white/[0.02] border border-white/10 backdrop-blur-2xl;
   }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
+  }
+}
+
+/* ── ANIMATIONS ─────────────────────────────────────────────── */
+@keyframes sync-pulse {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+
+  100% {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+}
+
+.animate-sync {
+  animation: sync-pulse 2s infinite ease-in-out;
 }
