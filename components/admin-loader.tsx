@@ -1,0 +1,48 @@
+"use client"
+
+import Image from "next/image"
+
+export function AdminLoader({ logoUrl }: { logoUrl?: string }) {
+    const logo = logoUrl || "/images/logo.png"
+
+    return (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">
+            {/* Fondo decorativo radial */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-accent/5 blur-2xl" />
+            </div>
+
+            {/* Logo con animación */}
+            <div className="relative flex items-center justify-center">
+                {/* Anillo exterior pulsante */}
+                <div className="absolute w-96 h-96 rounded-full border-2 border-primary/30 animate-ping" style={{ animationDuration: '2s' }} />
+                {/* Anillo medio */}
+                <div className="absolute w-72 h-72 rounded-full border-2 border-primary/50 animate-pulse" style={{ animationDuration: '1.5s' }} />
+
+                {/* Contenedor logo */}
+                <div
+                    className="relative w-52 h-52 flex items-center justify-center"
+                    style={{ animation: 'adminLogoFloat 2.5s ease-in-out infinite' }}
+                >
+                    <Image
+                        src={logo}
+                        alt="Pet Care Studio"
+                        fill
+                        className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
+                        priority
+                    />
+                </div>
+            </div>
+
+            {/* CSS keyframes */}
+            <style>{`
+                @keyframes adminLogoFloat {
+                  0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 10px 30px rgba(0,0,0,0.06)); }
+                  50%       { transform: translateY(-8px) scale(1.02); filter: drop-shadow(0 24px 48px rgba(0,0,0,0.10)); }
+                }
+            `}</style>
+        </div>
+    )
+}
+
