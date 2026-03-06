@@ -174,8 +174,11 @@ export function ServicesTab() {
 
                         {/* Delete */}
                         <div className="p-6 border-t border-white/[0.06] flex">
-                            <button className="admin-btn-danger w-full rounded-xl gap-3 text-[10px] font-black uppercase tracking-widest"
-                                onClick={() => handleDeleteService(service.id)}>
+                            <button
+                                className="admin-btn-danger w-full rounded-xl gap-3 text-[10px] font-black uppercase tracking-widest disabled:opacity-50"
+                                onClick={() => handleDeleteService(service.id)}
+                                disabled={saving}
+                            >
                                 <Trash2 className="h-3.5 w-3.5" />
                                 Eliminar Servicio
                             </button>

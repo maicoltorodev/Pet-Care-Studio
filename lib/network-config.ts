@@ -20,7 +20,8 @@ export const ADMIN_API_KEY = process.env.NEXT_PUBLIC_ADMIN_API_KEY || "super_sec
 
 const IS_PRODUCTION = typeof window !== 'undefined' &&
     (window.location.hostname.includes('railway.app') ||
-        window.location.hostname.includes('petcarestudio.com'));
+        window.location.hostname.includes('petcarestudio.com') ||
+        window.location.hostname.includes('vercel.app'));
 
 export const networkConfig = {
     isProduction: IS_PRODUCTION,

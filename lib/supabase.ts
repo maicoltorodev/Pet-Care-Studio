@@ -4,10 +4,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
-    // En Build Time de Vercel, si faltan las env vars, esto dará un error claro.
+    const missing = !supabaseUrl ? 'NEXT_PUBLIC_SUPABASE_URL' : 'NEXT_PUBLIC_SUPABASE_ANON_KEY';
     throw new Error(
-        "Faltan las variables de entorno de Supabase. " +
-        "Asegúrate de configurar NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY en el panel de Vercel."
+        `Error de Inicialización: Falta la variable ${missing} en Vercel. ` +
+        "Asegúrate de que el nombre sea EXACTO y esté marcada la casilla 'Production' en el panel de Environment Variables."
     )
 }
 

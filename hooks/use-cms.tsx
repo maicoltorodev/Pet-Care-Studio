@@ -336,8 +336,10 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
             icon: "Scissors",
             order_index: services.length
         }
-        const { data } = await supabase.from("services").insert([newService]).select()
-        if (data && data.length > 0) {
+        const { data, error } = await supabase.from("services").insert([newService]).select()
+        if (!error && data && data.length > 0) {
+            const inserted = data[0] as Service;
+            setServices(prev => [...prev, inserted]);
             toast.success("Servicio creado")
             await invalidateServices()  // Solo invalida servicios
             clearAICache()
@@ -415,17 +417,35 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         })
         if (!ok) return;
         setSaving(true)
-        // Clear any pending auto-save
-        if (serviceTimeoutRef.current[id]) {
-            clearTimeout(serviceTimeoutRef.current[id])
+        try {
+            // Clear any pending auto-save
+            if (serviceTimeoutRef.current[id]) {
+                clearTimeout(serviceTimeoutRef.current[id])
+            }
+            const serviceToDelete = services.find(s => s.id === id)
+            if (serviceToDelete?.image_url) await deleteFromStorage(serviceToDelete.image_url)
+
+            const { error } = await supabase.from("services").delete().eq("id", id)
+
+            if (error) {
+                console.error("[DeleteService] Error al eliminar:", error)
+                toast.error("Error al eliminar el servicio", { description: error.message })
+                setSaving(false)
+                return
+            }
+
+            // Actualización optimista del estado local para respuesta instantánea
+            setServices(prev => prev.filter(s => s.id !== id))
+
+            await invalidateServices()
+            clearAICache()
+            toast.info("Servicio eliminado del catálogo")
+        } catch (err) {
+            console.error("[DeleteService] Error inesperado:", err)
+            toast.error("Error inesperado al eliminar")
+        } finally {
+            setSaving(false)
         }
-        const serviceToDelete = services.find(s => s.id === id)
-        if (serviceToDelete?.image_url) await deleteFromStorage(serviceToDelete.image_url)
-        await supabase.from("services").delete().eq("id", id)
-        await invalidateServices()
-        clearAICache()
-        toast.info("Servicio eliminado del catálogo")
-        setSaving(false)
     }
 
     const handleServiceImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, serviceId: string, oldUrl: string | undefined) => {
