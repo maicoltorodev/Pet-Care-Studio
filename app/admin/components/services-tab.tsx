@@ -8,6 +8,28 @@ import {
     Stethoscope, Dog, Cat, Star, Gift, ArrowUp, ArrowDown
 } from "lucide-react"
 import { useCMS, Service } from "@/hooks/use-cms"
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from "@/components/ui/dialog"
+
+const iconList = [
+    { id: 'Scissors', icon: Scissors, label: 'Corte' },
+    { id: 'Waves', icon: Waves, label: 'Baño' },
+    { id: 'Sparkles', icon: Sparkles, label: 'Spa' },
+    { id: 'Shower', icon: Shower, label: 'Ducha' },
+    { id: 'HeartPulse', icon: HeartPulse, label: 'Salud' },
+    { id: 'Bath', icon: Bath, label: 'Tina' },
+    { id: 'Wind', icon: Wind, label: 'Secado' },
+    { id: 'Stethoscope', icon: Stethoscope, label: 'Vet' },
+    { id: 'Dog', icon: Dog, label: 'Perro' },
+    { id: 'Cat', icon: Cat, label: 'Gato' },
+    { id: 'Star', icon: Star, label: 'Premium' },
+    { id: 'Gift', icon: Gift, label: 'Regalo' }
+]
 
 const iconMap: { [key: string]: any } = {
     Scissors, Waves, Sparkles, Shower, HeartPulse, Bath, Wind,
@@ -19,6 +41,14 @@ export function ServicesTab() {
         services, handleAddService, handleServiceChange, handleUpdateService,
         handleDeleteService, handleServiceImageUpload, handleMoveService, saving
     } = useCMS();
+
+    const [pickerOpen, setPickerOpen] = React.useState(false)
+    const [activeServiceId, setActiveServiceId] = React.useState<string | null>(null)
+
+    const handleOpenPicker = (id: string) => {
+        setActiveServiceId(id)
+        setPickerOpen(true)
+    }
 
     return (
         <div className="space-y-8 max-w-[1200px] mx-auto pb-32 animate-in fade-in duration-700">
@@ -89,15 +119,22 @@ export function ServicesTab() {
 
                         {/* Content */}
                         <div className="p-5 md:p-8 flex-1 flex flex-col gap-5 relative">
-                            {/* Icon preview */}
+                            {/* Icon preview (Clickable) */}
                             {service.image_url ? (
-                                <div className="absolute right-8 -top-7 flex h-14 w-14 items-center justify-center rounded-2xl bg-card border border-white/20 shadow-2xl z-20 group-hover:scale-110 group-hover:border-primary/40 transition-all duration-500">
+                                <button
+                                    onClick={() => handleOpenPicker(service.id)}
+                                    title="Cambiar Icono"
+                                    className="absolute right-8 -top-7 flex h-14 w-14 items-center justify-center rounded-2xl bg-card border border-white/20 shadow-2xl z-20 group-hover:scale-110 group-hover:border-primary/40 transition-all duration-500 hover:shadow-primary/30 active:scale-95"
+                                >
                                     {React.createElement(iconMap[service.icon || 'Scissors'] || Scissors, { className: "h-6 w-6 text-primary" })}
-                                </div>
+                                </button>
                             ) : (
-                                <div className="mb-1 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20">
+                                <button
+                                    onClick={() => handleOpenPicker(service.id)}
+                                    className="mb-1 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-all active:scale-95"
+                                >
                                     {React.createElement(iconMap[service.icon || 'Scissors'] || Scissors, { className: "h-7 w-7 text-primary" })}
-                                </div>
+                                </button>
                             )}
 
                             <div className="space-y-2">
@@ -114,31 +151,6 @@ export function ServicesTab() {
                                     value={service.description ?? ""}
                                     onChange={(e) => handleServiceChange(service.id, "description", e.target.value)}
                                     placeholder="Detalla el proceso..." />
-                            </div>
-
-                            {/* Icon selector */}
-                            <div className="space-y-2">
-                                <label className="admin-muted">Icono</label>
-                                <div className="grid grid-cols-6 gap-2 bg-black/40 p-2 rounded-2xl border border-white/[0.08]">
-                                    {[
-                                        { id: 'Scissors', icon: Scissors }, { id: 'Waves', icon: Waves },
-                                        { id: 'Sparkles', icon: Sparkles }, { id: 'Shower', icon: Shower },
-                                        { id: 'HeartPulse', icon: HeartPulse }, { id: 'Bath', icon: Bath },
-                                        { id: 'Wind', icon: Wind }, { id: 'Stethoscope', icon: Stethoscope },
-                                        { id: 'Dog', icon: Dog }, { id: 'Cat', icon: Cat },
-                                        { id: 'Star', icon: Star }, { id: 'Gift', icon: Gift }
-                                    ].map((item) => {
-                                        const Icon = item.icon;
-                                        const sel = service.icon === item.id;
-                                        return (
-                                            <button key={item.id} type="button"
-                                                onClick={() => handleServiceChange(service.id, "icon", item.id)}
-                                                className={`flex items-center justify-center h-9 w-9 rounded-xl transition-all duration-200 ${sel ? "bg-primary text-white shadow-lg scale-110" : "text-white/15 hover:text-white/50 hover:bg-white/[0.06]"}`}>
-                                                <Icon className="h-4 w-4" />
-                                            </button>
-                                        );
-                                    })}
-                                </div>
                             </div>
 
                             {/* Price */}
@@ -197,6 +209,45 @@ export function ServicesTab() {
                     </div>
                 )}
             </div>
+
+            {/* ICON PICKER MODAL */}
+            <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
+                <DialogContent className="max-w-md bg-black/90 border-white/10 backdrop-blur-3xl rounded-[2.5rem] p-10 overflow-hidden">
+                    <DialogHeader className="mb-8">
+                        <DialogTitle className="admin-title text-2xl">Seleccionar <span className="text-primary">Icono</span></DialogTitle>
+                        <DialogDescription className="admin-body">Elige el símbolo que mejor representa este servicio</DialogDescription>
+                    </DialogHeader>
+
+                    <div className="grid grid-cols-4 gap-4 p-2">
+                        {iconList.map((item) => {
+                            const Icon = item.icon
+                            const currentService = services?.find(s => s.id === activeServiceId)
+                            const isSelected = currentService?.icon === item.id
+
+                            return (
+                                <button
+                                    key={item.id}
+                                    onClick={() => {
+                                        if (activeServiceId) {
+                                            handleServiceChange(activeServiceId, "icon", item.id)
+                                            setPickerOpen(false)
+                                        }
+                                    }}
+                                    className={`group relative flex flex-col items-center justify-center gap-2 p-4 rounded-2xl border transition-all duration-300 ${isSelected
+                                        ? 'bg-primary/20 border-primary text-primary shadow-[0_0_20px_rgba(45,212,191,0.2)]'
+                                        : 'bg-white/[0.03] border-white/10 text-white/30 hover:bg-white/[0.08] hover:border-white/20 hover:text-white'
+                                        }`}
+                                >
+                                    <Icon className={`h-6 w-6 transition-transform duration-300 group-hover:scale-110 ${isSelected ? 'animate-pulse' : ''}`} />
+                                    <span className="text-[8px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {item.label}
+                                    </span>
+                                </button>
+                            )
+                        })}
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
