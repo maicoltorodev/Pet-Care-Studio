@@ -140,7 +140,7 @@ export function TestimonialsTab() {
                                     {/* Actions */}
                                     <div className="p-8 pt-0 flex gap-3">
                                         <button onClick={() => handleRejectTestimonial(t)} title="Rechazar"
-                                            className="admin-btn-danger">
+                                            className="admin-btn-danger w-12 px-0">
                                             <Ban className="h-4 w-4" />
                                         </button>
                                         <button onClick={() => handleApproveTestimonial(t)}
@@ -224,7 +224,7 @@ export function TestimonialsTab() {
                                     {/* Actions */}
                                     <div className="p-8 pt-0 flex justify-center">
                                         <button onClick={() => handleDeleteTestimonial(t.id)} title="Eliminar"
-                                            className="admin-btn-danger">
+                                            className="admin-btn-danger w-12 px-0">
                                             <Trash2 className="h-4 w-4" />
                                         </button>
                                     </div>
