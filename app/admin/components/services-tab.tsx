@@ -156,9 +156,9 @@ export function ServicesTab() {
                             {/* Price */}
                             <div className="space-y-2">
                                 <label className="admin-muted">Precio</label>
-                                <div className="relative">
-                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-primary font-black text-lg opacity-60">$</span>
-                                    <Input type="text" className="admin-input pl-10 text-2xl font-black"
+                                <div className="relative group/price">
+                                    <span className="absolute left-6 top-1/2 -translate-y-1/2 text-primary font-black text-xl z-20 pointer-events-none transition-transform group-focus-within/price:scale-110">$</span>
+                                    <Input type="text" className="admin-input pl-14 text-2xl font-black"
                                         value={service.price ?? ""}
                                         onChange={(e) => handleServiceChange(service.id, "price", e.target.value)}
                                         placeholder="0" />
@@ -169,9 +169,9 @@ export function ServicesTab() {
                             <div className="space-y-3 pt-2 border-t border-white/[0.06]">
                                 <label className="admin-muted">Atributos Clave (3)</label>
                                 {[0, 1, 2].map((idx) => (
-                                    <div key={idx} className="relative">
-                                        <div className="absolute left-5 top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-primary/40" />
-                                        <Input className="admin-input h-11 pl-10 text-xs"
+                                    <div key={idx} className="relative group/feat">
+                                        <div className="absolute left-6 top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-primary/40 z-20 pointer-events-none group-focus-within/feat:bg-primary transition-colors" />
+                                        <Input className="admin-input h-11 pl-14 text-xs font-black uppercase tracking-widest"
                                             value={service.features?.[idx] || ""}
                                             onChange={(e) => {
                                                 const nf = [...(service.features || ["", "", ""])];
