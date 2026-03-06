@@ -50,7 +50,7 @@
   }
 }
 
-/* ── ADMIN SYSTEM v2 ────────────────────────────────────────── */
+/* ── ADMIN SYSTEM v2 (Turbopack Optimized) ────────────────────── */
 @layer components {
 
   /* Fundamental Card Architecture */
@@ -85,41 +85,43 @@
   }
 
   /* ── BUTTON ENGINE ────────────────────────────────────────── */
-  .admin-btn-base {
-    @apply flex items-center justify-center gap-2 h-12 rounded-xl font-black uppercase tracking-[0.2em] text-[11px] active:scale-95 transition-all duration-300 disabled:opacity-20 disabled:pointer-events-none;
-  }
+  /* NOTA: Turbopack en Tailwind v4 puede fallar al aplicar clases custom entre sí. 
+     Consolidamos los estilos base manualmente para máxima compatibilidad de build. */
 
   .admin-btn-primary {
-    @apply admin-btn-base bg-primary text-white px-7 hover:brightness-110 hover:shadow-[0_0_20px_rgba(45, 212, 191, 0.3)];
+    @apply flex items-center justify-center gap-2 h-12 rounded-xl font-black uppercase tracking-[0.2em] text-[11px] active:scale-95 transition-all duration-300 disabled:opacity-20 disabled:pointer-events-none;
+    @apply bg-primary text-white px-7 hover:brightness-110 hover:shadow-[0_0_20px_rgba(45, 212, 191, 0.3)];
   }
 
   .admin-btn-ghost {
-    @apply admin-btn-base bg-white/[0.05] border border-white/10 text-white/60 px-7 hover:bg-white/[0.10] hover:text-white hover:border-white/20;
+    @apply flex items-center justify-center gap-2 h-12 rounded-xl font-black uppercase tracking-[0.2em] text-[11px] active:scale-95 transition-all duration-300 disabled:opacity-20 disabled:pointer-events-none;
+    @apply bg-white/[0.05] border border-white/10 text-white/60 px-7 hover:bg-white/[0.10] hover:text-white hover:border-white/20;
   }
 
   .admin-btn-danger {
-    @apply admin-btn-base bg-white/[0.04] border border-white/[0.08] text-white/30 px-6 hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/20 shadow-none;
+    @apply flex items-center justify-center gap-2 h-12 rounded-xl font-black uppercase tracking-[0.2em] text-[11px] active:scale-95 transition-all duration-300 disabled:opacity-20 disabled:pointer-events-none;
+    @apply bg-white/[0.04] border border-white/[0.08] text-white/30 px-6 hover:bg-rose-500/10 hover:text-rose-400 hover:border-rose-500/20 shadow-none;
   }
 
   /* ── BADGE ENGINE ──────────────────────────────────────────── */
-  .admin-badge-base {
-    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
-  }
-
   .admin-badge-primary {
-    @apply admin-badge-base bg-primary/10 border-primary/20 text-primary;
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
+    @apply bg-primary/10 border-primary/20 text-primary;
   }
 
   .admin-badge-warning {
-    @apply admin-badge-base bg-amber-500/10 border-amber-500/20 text-amber-400;
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
+    @apply bg-amber-500/10 border-amber-500/20 text-amber-400;
   }
 
   .admin-badge-success {
-    @apply admin-badge-base bg-emerald-500/10 border-emerald-500/20 text-emerald-400;
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
+    @apply bg-emerald-500/10 border-emerald-500/20 text-emerald-400;
   }
 
   .admin-badge-muted {
-    @apply admin-badge-base bg-white/[0.04] border-white/10 text-white/40;
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border backdrop-blur-md;
+    @apply bg-white/[0.04] border-white/10 text-white/40;
   }
 
   /* ── UTILITIES ────────────────────────────────────────────── */
