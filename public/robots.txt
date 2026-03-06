@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://www.petcarestudio.com
+Host: https://petcarestudio.vercel.app
 
 # Sitemaps
-Sitemap: https://www.petcarestudio.com/sitemap.xml
+Sitemap: https://petcarestudio.vercel.app/sitemap.xml

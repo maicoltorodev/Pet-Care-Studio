@@ -96,6 +96,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/20 transition-colors duration-300;
+    font-style: normal !important;
   }
 
   html {

@@ -28,11 +28,11 @@ export function useSupabaseRealtime(subscriptions: RealtimeSubscription[], deps:
     const channels = subscriptions.map(({ tableName, event = '*', callback }) => {
       const channelName = `realtime-${tableName}-${Date.now()}`
       const channel = supabase.channel(channelName)
-        .on('postgres_changes', {
-          event: event as 'INSERT' | 'UPDATE' | 'DELETE' | '*',
+        .on('postgres_changes' as any, {
+          event: event,
           schema: 'public',
           table: tableName
-        } as unknown as { [key: string]: string }, callback as unknown as (payload: RealtimePostgresChangesPayload<Record<string, unknown>>) => void)
+        }, callback)
         .subscribe()
 
       logger.debug(`Realtime subscription created: ${channelName} for ${tableName}`)

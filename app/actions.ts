@@ -33,23 +33,3 @@ export async function invalidateTransformations() {
     revalidateTag("transformations", "max")
 }
 
-// Time-based cache con lógica inteligente
-export async function scheduleRevalidate(path: string, minutes: number) {
-    // Programar revalidación automática
-    setTimeout(() => {
-        revalidatePath(path)
-        console.log(`Cache invalidado automáticamente para ${path} después de ${minutes} minutos`)
-    }, minutes * 60 * 1000)
-}
-
-// Cache híbrido: manual + automático
-export async function smartInvalidate(path: string, autoInvalidateMinutes?: number) {
-    // Invalidación inmediata
-    revalidatePath(path)
-
-    // Si se especifica, programar revalidación automática
-    if (autoInvalidateMinutes) {
-        scheduleRevalidate(path, autoInvalidateMinutes)
-    }
-}
-

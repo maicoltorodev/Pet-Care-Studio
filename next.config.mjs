@@ -1,10 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    ignoreBuildErrors: true,
+    // Re-enabling for production readiness
+    ignoreBuildErrors: false,
   },
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fizfmxnfojagfrvhwsqb.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'petcarestudio.vercel.app',
+        port: '',
+        pathname: '/**',
+      }
+    ],
   },
   allowedDevOrigins: ['localhost', '192.168.1.35'],
 }

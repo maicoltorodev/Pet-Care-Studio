@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const keywords = "peluquería canina, grooming, spa para perros, baño y corte, estética de mascotas"
 
   return {
-    metadataBase: new URL(process.env.SITE_URL || 'https://www.petcarestudio.com'),
+    metadataBase: new URL(process.env.SITE_URL || 'https://petcarestudio.vercel.app'),
     title: {
       default: `${siteName} | ${tagline}`,
       template: `%s | ${siteName}`,
