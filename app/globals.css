@@ -21,6 +21,9 @@
 
   --radius-admin: 2.5rem;
   --radius-admin-inner: 1.5rem;
+
+  /* Custom Shadow for Build Compatibility */
+  --shadow-primary-glow: 0 0 20px rgba(45, 212, 191, 0.3);
 }
 
 /* ── BASE RESET (Enterprise Standards) ─────────────────────────── */
@@ -85,12 +88,13 @@
   }
 
   /* ── BUTTON ENGINE ────────────────────────────────────────── */
-  /* NOTA: Turbopack en Tailwind v4 puede fallar al aplicar clases custom entre sí. 
-     Consolidamos los estilos base manualmente para máxima compatibilidad de build. */
-
   .admin-btn-primary {
     @apply flex items-center justify-center gap-2 h-12 rounded-xl font-black uppercase tracking-[0.2em] text-[11px] active:scale-95 transition-all duration-300 disabled:opacity-20 disabled:pointer-events-none;
-    @apply bg-primary text-white px-7 hover:brightness-110 hover:shadow-[0_0_20px_rgba(45, 212, 191, 0.3)];
+    @apply bg-primary text-white px-7 hover:brightness-110;
+
+    &:hover {
+      box-shadow: var(--shadow-primary-glow);
+    }
   }
 
   .admin-btn-ghost {
