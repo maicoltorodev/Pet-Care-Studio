@@ -216,13 +216,13 @@ function LeadsDesktop() {
                         </Badge>
                     </div>
                     {/* Search Component */}
-                    <div className="relative group">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/40 group-focus-within:text-primary transition-colors duration-500" />
+                    <div className="flex items-center gap-4 bg-black/40 border border-white/10 rounded-[1.2rem] h-11 px-5 focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/20 transition-all group/search">
+                        <Search className="h-4 w-4 text-white/20 group-focus-within/search:text-primary transition-colors duration-500 shrink-0" />
                         <input
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             placeholder="Buscar cliente..."
-                            className="admin-input pl-11 pr-4 py-3.5 text-[11px]"
+                            className="flex-1 border-none bg-transparent shadow-none focus:outline-none text-[11px] text-white/80 placeholder:text-white/20 mt-0.5"
                         />
                     </div>
                 </div>
@@ -814,13 +814,13 @@ function LeadsMobile() {
 
                 {/* Search */}
                 <div className="px-4 py-3 border-b border-white/[0.04]">
-                    <div className="relative">
-                        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30" />
+                    <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-2xl h-10 px-4 focus-within:border-primary/50 transition-all group/search-m">
+                        <Search className="h-3.5 w-3.5 text-white/30 group-focus-within/search-m:text-primary shrink-0 transition-colors" />
                         <input
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             placeholder="Buscar cliente..."
-                            className="admin-input pl-10 pr-4 py-3 text-[11px] w-full"
+                            className="flex-1 border-none bg-transparent shadow-none focus:outline-none text-[11px] text-white/80 placeholder:text-white/20 h-full w-full"
                         />
                     </div>
                 </div>
