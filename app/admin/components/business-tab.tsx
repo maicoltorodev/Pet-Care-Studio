@@ -12,6 +12,8 @@ import {
 import { Card } from "@/components/ui/card"
 import { networkConfig } from "@/lib/network-config"
 import { useIsMobile } from "@/hooks/use-is-mobile"
+import { AdminLoader } from "@/components/admin-loader"
+import { useCMS } from "@/hooks/use-cms"
 
 const COLORS = ['#2DD4BF', '#0EA5E9', '#8B5CF6', '#EC4899', '#F59E0B', '#10B981']
 
@@ -57,8 +59,10 @@ export function BusinessTab() {
 ════════════════════════════════════════ */
 function BusinessDesktop() {
     const { data, loading, error, fetchAnalytics } = useBusinessData()
+    const { content } = useCMS()
+    const logoUrl = content?.find((c: any) => c.key === 'site_logo_url')?.value
 
-    if (loading && !data) return <LoadingState />
+    if (loading && !data) return <LoadingState logoUrl={logoUrl} />
     if (error && !data) return <ErrorState onRetry={fetchAnalytics} />
 
     const kpis = buildKpis(data)
@@ -169,8 +173,10 @@ function BusinessDesktop() {
 ════════════════════════════════════════ */
 function BusinessMobile() {
     const { data, loading, error, fetchAnalytics } = useBusinessData()
+    const { content } = useCMS()
+    const logoUrl = content?.find((c: any) => c.key === 'site_logo_url')?.value
 
-    if (loading && !data) return <LoadingState />
+    if (loading && !data) return <LoadingState logoUrl={logoUrl} />
     if (error && !data) return <ErrorState onRetry={fetchAnalytics} />
 
     const kpis = buildKpis(data)
@@ -287,38 +293,30 @@ function buildKpis(data: any) {
             label: "Conversión",
             value: `${data?.stats?.conversion?.value || '0'}%`,
             icon: Target,
-            trend: data?.stats?.conversion?.trend || '0%',
-            isPositive: !(data?.stats?.conversion?.trend || '').includes('-'),
             desc: "Retrospectiva Total"
         },
         {
             label: "En Caja",
             value: `$${(data?.stats?.revenue?.realized || 0).toLocaleString()}`,
             icon: DollarSign,
-            trend: data?.stats?.revenue?.trend || '0%',
-            isPositive: true,
             desc: `Proy. 7D: $${(data?.stats?.revenue?.projected || 0).toLocaleString()}`
         },
         {
             label: "ROI Tiempo",
             value: `${data?.stats?.efficiency?.value || '0'}h`,
             icon: Sparkles,
-            trend: "IA Activa",
-            isPositive: true,
             desc: "Ahorro Acumulado"
         },
         {
             label: "Fidelización",
             value: `${data?.stats?.loyalty?.value || '0'}%`,
             icon: Heart,
-            trend: data?.stats?.loyalty?.trend || '0%',
-            isPositive: !(data?.stats?.loyalty?.trend || '').includes('-'),
             desc: "Tasa de Retorno"
         },
     ]
 }
 
-function KpiCard({ label, value, icon: Icon, trend, isPositive, desc }: any) {
+function KpiCard({ label, value, icon: Icon, desc }: any) {
     return (
         <Card className="admin-card p-10 hover:bg-white/[0.08] transition-all duration-700 group relative overflow-hidden h-full border-white/5 hover:border-white/20">
             <div className="absolute -right-8 -top-8 bg-primary/10 h-32 w-32 rounded-full blur-[80px] group-hover:bg-primary/20 transition-all duration-1000" />
@@ -326,12 +324,8 @@ function KpiCard({ label, value, icon: Icon, trend, isPositive, desc }: any) {
                 <Icon className="h-7 w-7 text-primary" />
             </div>
             <h3 className="admin-label text-white/30 mb-3 tracking-[0.2em] italic-none">{label}</h3>
-            <div className="flex items-baseline gap-4">
+            <div className="flex items-baseline">
                 <span className="text-4xl font-black text-white tracking-tighter" style={{ fontStyle: 'normal' }}>{value}</span>
-                <div className={`flex items-center text-[10px] font-black tracking-widest ${isPositive ? 'text-primary' : 'text-rose-500'}`}>
-                    {isPositive ? <ArrowUpRight className="h-3.5 w-3.5 mr-1" /> : <ArrowDownRight className="h-3.5 w-3.5 mr-1" />}
-                    {trend}
-                </div>
             </div>
             <div className="mt-8 pt-6 border-t border-white/5">
                 <p className="admin-label text-white/20 text-[9px] tracking-[0.2em] italic-none">{desc}</p>
@@ -340,17 +334,13 @@ function KpiCard({ label, value, icon: Icon, trend, isPositive, desc }: any) {
     )
 }
 
-function KpiCardMobile({ label, value, icon: Icon, trend, isPositive, desc }: any) {
+function KpiCardMobile({ label, value, icon: Icon, desc }: any) {
     return (
         <div className="bg-black/30 border border-white/[0.08] rounded-[2rem] p-5 relative overflow-hidden backdrop-blur-3xl">
             <div className="absolute -right-4 -top-4 bg-primary/10 h-16 w-16 rounded-full blur-2xl" />
             <div className="flex items-center justify-between mb-4">
                 <div className="h-8 w-8 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
                     <Icon className="h-4 w-4 text-primary" />
-                </div>
-                <div className={`flex items-center text-[9px] font-black ${isPositive ? 'text-primary' : 'text-rose-500'}`}>
-                    {isPositive ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-                    {trend}
                 </div>
             </div>
             <p className="text-[10px] text-white/30 mb-1 font-bold italic-none tracking-wider uppercase">{label}</p>
@@ -457,23 +447,14 @@ function EmptyOverlay({ show, label }: { show: boolean; label: string }) {
     )
 }
 
-function LoadingState() {
+function LoadingState({ logoUrl }: { logoUrl?: string }) {
     return (
-        <div className="h-[70vh] flex flex-col items-center justify-center gap-10">
-            <div className="relative">
-                <div className="h-32 w-32 rounded-full border-t-2 border-primary/40 border-r-2 border-primary animate-spin" />
-                <div className="absolute inset-0 m-auto h-20 w-20 rounded-full border-b-2 border-primary/20 animate-spin-slow" />
-                <Sparkles className="absolute inset-0 m-auto h-8 w-8 text-primary animate-pulse" />
-            </div>
-            <div className="text-center space-y-3">
-                <p className="text-[12px] font-black uppercase tracking-[0.6em] text-white/40 animate-pulse italic-none">Calculando Inteligencia Estratégica</p>
-                <div className="flex items-center justify-center gap-1">
-                    <div className="h-1 w-1 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.3s]" />
-                    <div className="h-1 w-1 rounded-full bg-primary/60 animate-bounce [animation-delay:-0.15s]" />
-                    <div className="h-1 w-1 rounded-full bg-primary animate-bounce" />
-                </div>
-            </div>
-        </div>
+        <AdminLoader
+            logoUrl={logoUrl}
+            isFullScreen={false}
+            label="Calculando Inteligencia Estratégica"
+            className="h-[70vh]"
+        />
     )
 }
 

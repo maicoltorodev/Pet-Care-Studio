@@ -1,12 +1,27 @@
 "use client"
 
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
-export function AdminLoader({ logoUrl }: { logoUrl?: string }) {
+export function AdminLoader({
+    logoUrl,
+    className,
+    isFullScreen = true,
+    label
+}: {
+    logoUrl?: string,
+    className?: string,
+    isFullScreen?: boolean,
+    label?: string
+}) {
     const logo = logoUrl || "/images/logo.png"
 
     return (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background">
+        <div className={cn(
+            "flex flex-col items-center justify-center overflow-hidden",
+            isFullScreen ? "fixed inset-0 z-50 bg-background" : "relative w-full py-20",
+            className
+        )}>
             {/* Fondo decorativo radial */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
@@ -14,7 +29,10 @@ export function AdminLoader({ logoUrl }: { logoUrl?: string }) {
             </div>
 
             {/* Logo con animación */}
-            <div className="relative flex items-center justify-center">
+            <div className={cn(
+                "relative flex items-center justify-center",
+                isFullScreen ? "scale-100" : "scale-75"
+            )}>
                 {/* Anillo exterior pulsante */}
                 <div className="absolute w-96 h-96 rounded-full border-2 border-primary/30 animate-ping" style={{ animationDuration: '2s' }} />
                 {/* Anillo medio */}
@@ -35,6 +53,19 @@ export function AdminLoader({ logoUrl }: { logoUrl?: string }) {
                 </div>
             </div>
 
+            {label && (
+                <div className="mt-12 text-center space-y-4 relative z-10">
+                    <p className="text-[12px] font-black uppercase tracking-[0.6em] text-white/40 animate-pulse italic-none">
+                        {label}
+                    </p>
+                    <div className="flex items-center justify-center gap-1.5">
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.3s]" />
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce [animation-delay:-0.15s]" />
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" />
+                    </div>
+                </div>
+            )}
+
             {/* CSS keyframes */}
             <style>{`
                 @keyframes adminLogoFloat {
@@ -45,4 +76,5 @@ export function AdminLoader({ logoUrl }: { logoUrl?: string }) {
         </div>
     )
 }
+
 

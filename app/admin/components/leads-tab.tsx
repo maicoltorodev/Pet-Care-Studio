@@ -189,17 +189,7 @@ function LeadsDesktop() {
                                 </div>
                                 {/* Botón Temporal de Borrado (Solo Desarrollo) */}
                                 <button
-                                    onClick={async () => {
-                                        const ok = await confirm({
-                                            title: "Borrado Total",
-                                            description: "🚨 ATENCIÓN: Esta acción es irreversible. Se eliminarán permanentemente todos los mensajes y citas de la base de datos.",
-                                            confirmText: "Borrar Todo",
-                                            variant: "destructive"
-                                        });
-                                        if (ok) {
-                                            handleResetAllData?.();
-                                        }
-                                    }}
+                                    onClick={() => handleResetAllData?.()}
                                     className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-white flex items-center justify-center opacity-0 group-hover/reset:opacity-100 transition-all duration-300 hover:scale-125 shadow-lg z-20"
                                     title="Borrar todos los datos"
                                 >
