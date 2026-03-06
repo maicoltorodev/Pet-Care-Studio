@@ -498,17 +498,22 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         setSaving(true)
         const newTrans = {
             name: "Mascota",
-            breed: "Raza Ej.",
-            before_image_url: "",
-            after_image_url: "",
+            breed: "Raza",
             is_visible: true,
-            order_index: transformations.length
+            order_index: (transformations?.length || 0) + 1
         }
-        const { data } = await supabase.from("transformations").insert([newTrans]).select()
-        if (data && data.length > 0) {
-            toast.success("Nuevo registro de Antes/Después añadido")
-            await invalidateTransformations()  // Solo invalida transformaciones
+        const { data, error } = await supabase.from("transformations").insert(newTrans).select().single()
+        if (error) {
+            toast.error("Error al crear transformación")
+            setSaving(false)
+            return
         }
+
+        // Optimistic local update
+        setTransformations(prev => [...prev, data as Transformation]);
+
+        await invalidateTransformations()
+        toast.success("Nueva foto agregada")
         setSaving(false)
     }
 
@@ -579,12 +584,24 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         if (transformationTimeoutRef.current[id]) {
             clearTimeout(transformationTimeoutRef.current[id])
         }
-        if (trans.before_image_url) await deleteFromStorage(trans.before_image_url)
-        if (trans.after_image_url) await deleteFromStorage(trans.after_image_url)
-        await supabase.from("transformations").delete().eq("id", String(trans.id))
-        await invalidateTransformations()
-        toast.info("Resultado eliminado")
-        setSaving(false)
+
+        try {
+            if (trans.before_image_url) await deleteFromStorage(trans.before_image_url)
+            if (trans.after_image_url) await deleteFromStorage(trans.after_image_url)
+            const { error } = await supabase.from("transformations").delete().eq("id", id)
+
+            if (error) throw error;
+
+            // Optimistic local update
+            setTransformations(prev => prev.filter(t => t.id.toString() !== id))
+
+            await invalidateTransformations()
+            toast.info("Resultado eliminado")
+        } catch (error: any) {
+            toast.error("Error al eliminar transformación", { description: error.message })
+        } finally {
+            setSaving(false)
+        }
     }
 
     const handleTransformationImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, transId: string, field: 'before_image_url' | 'after_image_url') => {
