@@ -40,7 +40,6 @@ const configTabs = [
     { id: 'ia_logistica', label: 'Horarios / Capacidad', icon: Clock },
     { id: 'identidad', label: 'Información Web', icon: Sparkles },
     { id: 'trust', label: 'Confianza', icon: Users },
-    { id: 'ia_config', label: 'Instrucciones IA', icon: Bot },
     { id: 'system_logs', label: 'Monitor', icon: ShieldAlert },
 ]
 

@@ -122,31 +122,7 @@ export function BrainConfigTab({ view = "cerebro" }: { view?: "cerebro" | "agend
 
             <div className="grid grid-cols-1 gap-8 items-start">
                 <div className="space-y-8">
-                    {view === "cerebro" ? (
-                        <div className="admin-card overflow-hidden">
-                            <div className="p-8 border-b border-white/[0.06] flex items-center justify-between gap-6">
-                                <div className="flex items-center gap-4">
-                                    <Bot className="h-5 w-5 text-amber-400/60" />
-                                    <h3 className="admin-header-title text-lg text-white/70">Guía de Atención al Cliente</h3>
-                                </div>
-                                <button
-                                    onClick={() => saveAISetting("system_instructions", localData.system_instructions)}
-                                    className="h-10 px-6 rounded-xl bg-primary text-white admin-label shadow-xl hover:brightness-110 active:scale-95 transition-all disabled:opacity-50"
-                                    disabled={saving}
-                                    style={{ fontStyle: 'normal' }}
-                                >
-                                    Guardar
-                                </button>
-                            </div>
-                            <Textarea
-                                value={localData.system_instructions}
-                                onChange={(e) => handleChange("system_instructions", e.target.value)}
-                                className="min-h-[600px] font-mono text-sm leading-relaxed bg-black/40 border-0 rounded-none p-10 text-white/60 focus-visible:ring-0"
-                                style={{ fontStyle: 'normal' }}
-                                placeholder="Define el comportamiento aquí..."
-                            />
-                        </div>
-                    ) : (
+                    {view === "agenda" && (
                         <div className="space-y-8 animate-in fade-in duration-700">
                             {/* 🗓️ Day Ribbon */}
                             <div className="admin-card">
