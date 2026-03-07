@@ -264,18 +264,35 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
 
     const saveContent = async (key: string, value: string) => {
         setSaving(true)
-        const { error } = await supabase.from("site_content").upsert({ key, value })
+        const { error } = await supabase.from("site_content").upsert({
+            key,
+            value,
+            updated_at: new Date().toISOString()
+        })
+
         if (error) {
-            toast.error("Error al guardar: " + error.message)
+            console.error(`[SaveContent] Error for ${key}:`, error)
+            toast.error("Error al sincronizar con la nube: " + error.message)
         } else {
             setContent(prev => {
                 const existing = prev.find(c => c.key === key);
                 if (existing) return prev.map(c => c.key === key ? { ...c, value } : c);
                 return [...prev, { key, value }];
             });
-            await invalidateSiteContent()  // Solo invalida contenido del sitio
-            clearAICache()
-            toast.success("Cambios publicados", { description: "La página pública ha sido actualizada." })
+
+            try {
+                // Notificar a Next.js que revalide la caché pública
+                await invalidateSiteContent()
+                // Notificar al servidor de IA que recargue configs
+                clearAICache()
+
+                toast.success("Cambios publicados", {
+                    description: "La página pública ha sido actualizada en tiempo real.",
+                    duration: 3000
+                })
+            } catch (invError) {
+                console.warn("[SaveContent] Falló la invalidación de caché:", invError)
+            }
         }
         setSaving(false)
     }

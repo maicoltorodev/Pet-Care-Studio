@@ -12,24 +12,28 @@ export async function invalidateTag(tag: string) {
     revalidateTag(tag, "max")
 }
 
-// Invalidación específica por tipo de contenido
 export async function invalidateSiteContent() {
-    revalidatePath("/")
+    console.log("Invalidating site content cache...")
+    revalidatePath("/", "layout")
+    revalidatePath("/", "page")
     revalidateTag("site_content", "max")
 }
 
 export async function invalidateServices() {
-    revalidatePath("/")
+    revalidatePath("/", "layout")
+    revalidatePath("/", "page")
     revalidateTag("services", "max")
 }
 
 export async function invalidateTestimonials() {
-    revalidatePath("/")
+    revalidatePath("/", "layout")
+    revalidatePath("/", "page")
     revalidateTag("testimonials", "max")
 }
 
 export async function invalidateTransformations() {
-    revalidatePath("/")
+    revalidatePath("/", "layout")
+    revalidatePath("/", "page")
     revalidateTag("transformations", "max")
 }
 

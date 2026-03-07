@@ -137,9 +137,6 @@ export function TransformationsTab() {
                         </div>
                         <h3 className="admin-title text-3xl opacity-30 mb-4">No hay fotos registradas</h3>
                         <p className="admin-dim mb-10">Sube las transformaciones de tus clientes</p>
-                        <button onClick={handleAddTransformation} className="admin-btn-primary">
-                            <Plus className="h-4 w-4" /> Subir Primera Foto
-                        </button>
                     </div>
                 )}
             </div>

@@ -4,7 +4,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import {
     Sparkles, Save, Loader2, Link as LinkIcon,
-    Instagram, Youtube, Music, Globe, FileText
+    Instagram, Youtube, Music, Globe, FileText,
+    Facebook, Twitter, Phone
 } from "lucide-react"
 import { useCMS } from "@/hooks/use-cms"
 
@@ -39,6 +40,15 @@ export function IdentidadTab() {
                 <div className="relative z-10 flex flex-col items-center gap-3">
                     <h2 className="admin-title text-4xl">Perfil de tu <span className="text-primary">Negocio</span></h2>
                     <p className="admin-body">Información, contacto y redes sociales</p>
+
+                    <button
+                        onClick={() => saveContent("site_name", getLocalVal("site_name"))}
+                        disabled={saving}
+                        className="mt-4 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2"
+                    >
+                        {saving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" />}
+                        Forzar Actualización de Caché
+                    </button>
                 </div>
             </div>
 
@@ -203,8 +213,11 @@ export function IdentidadTab() {
                     <div className="flex flex-col gap-3">
                         {[
                             { key: "instagram", icon: Instagram, label: "Instagram", grad: "bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]" },
+                            { key: "facebook", icon: Facebook, label: "Facebook", grad: "bg-blue-600" },
                             { key: "tiktok", icon: Music, label: "TikTok", grad: "bg-white text-black" },
-                            { key: "youtube", icon: Youtube, label: "YouTube", grad: "bg-red-600" }
+                            { key: "youtube", icon: Youtube, label: "YouTube", grad: "bg-red-600" },
+                            { key: "twitter", icon: Twitter, label: "Twitter/X", grad: "bg-black" },
+                            { key: "whatsapp", icon: Phone, label: "WhatsApp", grad: "bg-green-500" }
                         ].map((social) => {
                             const enabled = getLocalVal(`social_${social.key}_enabled`) === "true";
                             return (

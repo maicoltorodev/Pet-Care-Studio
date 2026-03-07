@@ -789,8 +789,16 @@ function LeadsMobile() {
                 {/* Header */}
                 <div className="p-5 border-b border-white/[0.06] flex items-center justify-between bg-black/20">
                     <div className="flex items-center gap-3">
-                        <div className="h-9 w-9 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
-                            <MessageSquare className="w-4 h-4 text-primary" />
+                        <div className="relative">
+                            <div className="h-9 w-9 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                                <MessageSquare className="w-4 h-4 text-primary" />
+                            </div>
+                            <button
+                                onClick={() => handleResetAllData?.()}
+                                className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-white flex items-center justify-center opacity-30 active:opacity-100 transition-all shadow-lg z-20"
+                            >
+                                <Trash2 className="w-2 h-2" />
+                            </button>
                         </div>
                         <div>
                             <p className="text-[10px] font-semibold text-white/30 uppercase tracking-widest" style={{ fontStyle: 'normal' }}>Lista de</p>
