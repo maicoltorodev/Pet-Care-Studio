@@ -339,7 +339,7 @@ function LeadsDesktop() {
                                             )}
 
                                             {/* Pasarela/Step Actual */}
-                                            <span className="text-[8px] text-white/20 admin-label truncate px-1 lowercase first-letter:uppercase">
+                                            <span className="text-[7px] text-white/10 font-black uppercase tracking-[0.2em] px-1 whitespace-nowrap">
                                                 {lead.current_step || "Init"}
                                             </span>
                                         </div>
@@ -381,11 +381,6 @@ function LeadsDesktop() {
                                             <h2 className="admin-header-title text-lg">
                                                 {selectedLead.name === selectedLead.phone ? selectedLead.phone : (selectedLead.name || selectedLead.phone)}
                                             </h2>
-                                            {selectedLead.current_step && (
-                                                <Badge className="bg-primary/10 text-primary border-none rounded-full px-3 py-0.5 admin-label h-5 translate-y-[1px]">
-                                                    {selectedLead.current_step}
-                                                </Badge>
-                                            )}
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <div className="flex items-center gap-2 opacity-30">
@@ -913,7 +908,7 @@ function LeadsMobile() {
                                                     Revisión
                                                 </div>
                                             )}
-                                            <span className="text-[8px] text-white/20 admin-label truncate">{lead.current_step || "Init"}</span>
+                                            <span className="text-[7px] text-white/10 font-black uppercase tracking-[0.2em] px-1 whitespace-nowrap">{lead.current_step || "Init"}</span>
                                         </div>
                                     </div>
                                     <ChevronRight className="h-4 w-4 text-white/20 shrink-0" />
