@@ -48,7 +48,7 @@ export function Navbar({ content }: { content: ContentItem[] }) {
   }
 
   const siteName = getContent('site_name', 'Pet Care Studio')
-  const logoUrl = getContent('site_logo_url', '/images/logo.png')
+  const logoUrl = getContent('site_logo_url', '/icons/logo.png')
 
   return (
     <header

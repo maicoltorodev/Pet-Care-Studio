@@ -77,7 +77,7 @@ export function Location({ content }: { content: ContentItem[] }) {
                     {/* Map Column */}
                     <div className="map-container relative aspect-square lg:aspect-auto lg:h-[600px] w-full overflow-hidden rounded-[3rem] border border-border/40 shadow-2xl bg-card">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d248.5256706634496!2d-74.04281650582921!3d4.698487978092646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9bcd4b8ea357%3A0x60b79171b415c76!2sPET%20CARE%20STUDIO!5e0!3m2!1ses-419!2sco!4v1771881822171!5m2!1ses-419!2sco"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.4079143816443!2d-74.04373223757324!3d4.698981682248104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9bcd4b8ea357%3A0x60b79171b415c76!2sPET%20CARE%20STUDIO!5e0!3m2!1ses-419!2sco!4v1772917216652!5m2!1ses-419!2sco"
                             width="100%"
                             height="100%"
                             style={{ border: 0 }}
