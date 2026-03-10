@@ -3,33 +3,7 @@
 import { useState, useRef, useCallback } from "react"
 import { X, Star, Upload, ChevronRight, ChevronLeft, Check, Camera } from "lucide-react"
 
-// Reutilizamos la misma lógica de compresión WebP del admin
-function compressToWebp(file: File): Promise<File> {
-    return new Promise((resolve) => {
-        if (!file.type.startsWith("image/") || file.type === "image/gif") return resolve(file)
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = (e) => {
-            const img = new window.Image()
-            img.src = e.target?.result as string
-            img.onload = () => {
-                const MAX = 1920
-                let w = img.width, h = img.height
-                if (w > h && w > MAX) { h = h * MAX / w; w = MAX }
-                else if (h > MAX) { w = w * MAX / h; h = MAX }
-                const canvas = document.createElement("canvas")
-                canvas.width = w; canvas.height = h
-                canvas.getContext("2d")?.drawImage(img, 0, 0, w, h)
-                canvas.toBlob((blob) => {
-                    if (blob) resolve(new File([blob], "review.webp", { type: "image/webp" }))
-                    else resolve(file)
-                }, "image/webp", 0.85)
-            }
-            img.onerror = () => resolve(file)
-        }
-        reader.onerror = () => resolve(file)
-    })
-}
+import { compressImageToWebp } from "@/lib/image-optimization"
 
 const STEPS = ["Calificación", "Tus datos", "Tu reseña", "Tu foto"] as const
 type Step = 0 | 1 | 2 | 3 | 4 // 4 = success
@@ -57,7 +31,7 @@ export function TestimonialWizard({ onClose }: WizardProps) {
         const raw = e.target.files?.[0]
         if (!raw) return
         setImageError("")
-        const compressed = await compressToWebp(raw)
+        const compressed = await compressImageToWebp(raw)
         if (compressed.size > 5 * 1024 * 1024) {
             setImageError("La imagen es demasiado pesada incluso comprimida (máx 5MB). Prueba con otra foto.")
             return

@@ -190,7 +190,7 @@
 
   /* Image Effects */
   .luxury-img {
-    @apply object-cover transition-all duration-1000 group-hover:scale-110 group-hover:brightness-110 grayscale-[30%] hover:grayscale-0;
+    @apply object-cover transition-all duration-1000 group-hover:scale-110;
   }
 
   /* Hide FAB when mobile menu is open */

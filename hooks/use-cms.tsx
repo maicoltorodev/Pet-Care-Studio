@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase"
 import { invalidateServices, invalidateTestimonials, invalidateTransformations, invalidateSiteContent } from "@/app/actions"
 import { toast } from "sonner"
 import { useConfirm } from "@/components/confirm-dialog"
+import { compressImageToWebp } from "@/lib/image-optimization"
 
 export interface SiteContent {
     key: string
@@ -196,52 +197,7 @@ export function CMSProvider({ children }: { children: React.ReactNode }) {
         }
     }, [])
 
-    const compressImageToWebp = (file: File): Promise<File> => {
-        return new Promise((resolve) => {
-            if (!file.type.startsWith('image/') || file.type === 'image/gif') {
-                return resolve(file);
-            }
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new window.Image();
-                img.src = event.target?.result as string;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    if (!ctx) return resolve(file);
 
-                    const MAX_WIDTH = 1920;
-                    const MAX_HEIGHT = 1920;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height && width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    } else if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    canvas.toBlob((blob) => {
-                        if (blob) {
-                            const newFileName = file.name.replace(/\.[^/.]+$/, "") + ".webp";
-                            resolve(new File([blob], newFileName, { type: 'image/webp' }));
-                        } else {
-                            resolve(file);
-                        }
-                    }, 'image/webp', 0.85);
-                };
-                img.onerror = () => resolve(file);
-            };
-            reader.onerror = () => resolve(file);
-        });
-    }
 
     const deleteFromStorage = async (url: string | null | undefined) => {
         if (!url) return;
