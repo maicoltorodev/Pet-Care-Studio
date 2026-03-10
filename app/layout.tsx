@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteName = data?.find(c => c.key === 'site_name')?.value || 'Pet Care Studio'
   const tagline = data?.find(c => c.key === 'site_tagline')?.value || 'Peluquería Canina Profesional'
   const desc = data?.find(c => c.key === 'footer_description')?.value || 'Tu mascota merece lo mejor. Servicios profesionales de grooming canino. Agenda tu cita hoy.'
-  const logo = data?.find(c => c.key === 'site_logo_url')?.value || '/icons/logo.png'
+  const logo = data?.find(c => c.key === 'site_logo_url')?.value || '/icons/logo.webp'
   const keywords = "peluquería canina, grooming, spa para perros, baño y corte, estética de mascotas"
 
   return {
@@ -42,32 +42,15 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: [
-        { url: '/icons/favicon.ico', sizes: '32x32' },
-        { url: '/icons/icon.svg', type: 'image/svg+xml' },
-        { url: '/icons/icon-dark.svg', type: 'image/svg+xml', media: '(prefers-color-scheme: dark)' },
+        { url: "icons/favicon.ico", sizes: "any" },
+        { url: "icons/icon.png", type: "image/png", sizes: "192x192" },
       ],
-      apple: '/icons/apple-icon.png',
-      other: [
-        {
-          rel: 'mask-icon',
-          url: '/icons/safari-pinned-tab.svg',
-          color: '#1A1A1A',
-        },
-        {
-          rel: 'apple-touch-startup-image',
-          url: '/icons/splash/apple-splash-2778-1284.png',
-          media: '(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)',
-        },
+      apple: [
+        { url: "icons/apple-icon.png", sizes: "180x180", type: "image/png" },
       ],
     },
     other: {
-      'script:ld+json': JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'Organization',
-        name: siteName,
-        url: process.env.SITE_URL || 'https://petcarestudio.vercel.app',
-        logo: `${process.env.SITE_URL || 'https://petcarestudio.vercel.app'}/icons/logo.png`,
-      }),
+      "og:logo": "https://www.inzidium.com/public/icons/icon.png",
     },
   }
 }

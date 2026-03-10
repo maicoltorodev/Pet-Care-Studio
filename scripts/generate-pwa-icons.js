@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
 
-const SOURCE_ICON = path.join(__dirname, '../public/icons/logo.png');
+const SOURCE_ICON = path.join(__dirname, '../public/icons/logo.webp');
 const OUTPUT_DIR = path.join(__dirname, '../public/icons');
 
 const icons = [

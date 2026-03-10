@@ -27,7 +27,7 @@ export function Hero({ content }: { content: ContentItem[] }) {
     subtitle: foundDesc || "",
     media: foundMedia || "/video.mp4",
     cta: foundCta || "Agendar Experiencia",
-    logo: foundLogo || "/icons/logo.png"
+    logo: foundLogo || "/icons/logo.webp"
   }
 
   // Reset clicks after 2s inactivity

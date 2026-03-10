@@ -14,7 +14,7 @@ export const contentType = 'image/png'
 
 export default async function Image() {
     // Cargar logo desde el sistema de archivos y convertirlo a Base64
-    const logoPath = join(process.cwd(), 'public/icons/logo.png')
+    const logoPath = join(process.cwd(), 'public/icons/logo.webp')
     const logoData = readFileSync(logoPath)
     const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`
 

@@ -13,7 +13,7 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image() {
-    const logoPath = join(process.cwd(), 'public/icons/logo.png')
+    const logoPath = join(process.cwd(), 'public/icons/logo.webp')
     const logoData = readFileSync(logoPath)
     const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`
 

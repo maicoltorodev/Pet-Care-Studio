@@ -14,7 +14,7 @@ export function AdminLoader({
     isFullScreen?: boolean,
     label?: string
 }) {
-    const logo = logoUrl || "/icons/logo.png"
+    const logo = logoUrl || "/icons/logo.webp"
 
     return (
         <div className={cn(

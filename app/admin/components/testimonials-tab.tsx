@@ -31,7 +31,7 @@ export function TestimonialsTab() {
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
                 <div className="relative z-10 flex flex-col items-center gap-6">
                     <h2 className="admin-title text-4xl">
-                        Opiniones <span className="text-primary">Atelier</span>
+                        Opiniones <span className="text-primary">De Clientes</span>
                     </h2>
                     <p className="admin-body">Gestiona lo que los dueños de mascotas dicen sobre tu trabajo</p>
                     <div className="admin-pill gap-3">

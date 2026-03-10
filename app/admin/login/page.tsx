@@ -60,7 +60,7 @@ export default function LoginPage() {
                 {/* Large Background Brand Element - Cinematic Logo Overlay (Balanced) */}
                 <div className="opacity-[0.08] select-none pointer-events-none transform -rotate-6 scale-[1.44] transition-all duration-1000 ease-out">
                     <img
-                        src={logoUrl || "/icons/logo.png"}
+                        src={logoUrl || "/icons/logo.webp"}
                         alt="Brand Background"
                         className="w-[720px] h-auto object-contain filter grayscale brightness-200 contrast-125"
                         onError={(e) => {

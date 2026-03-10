@@ -7,7 +7,7 @@ const ASSETS_TO_CACHE = [
     '/favicon.ico',
     '/icon.svg',
     '/icons/apple-icon.png',
-    '/icons/logo.png',
+    '/icons/logo.webp',
 ];
 
 self.addEventListener('install', (event) => {
