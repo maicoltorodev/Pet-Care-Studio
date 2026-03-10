@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { createPortal } from "react-dom"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
@@ -52,7 +53,8 @@ export function Navbar({ content }: { content: ContentItem[] }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${scrolled || mobileOpen
+      style={{ zIndex: 999999 }}
+      className={`fixed top-0 left-0 right-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${scrolled || mobileOpen
         ? "bg-background/80 backdrop-blur-xl py-4 shadow-2xl"
         : "bg-gradient-to-b from-black/60 to-transparent py-8"
         }`}
@@ -82,9 +84,9 @@ export function Navbar({ content }: { content: ContentItem[] }) {
         </button>
 
         {/* ============================================================
-            DESKTOP NAVIGATION (Hidden on Mobile)
+            DESKTOP NAVIGATION (Hidden on Mobile/Tablet)
             ============================================================ */}
-        <div className="hidden items-center gap-12 md:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           <div className="flex items-center gap-10">
             {navLinks.map((link) => (
               <button
@@ -116,7 +118,7 @@ export function Navbar({ content }: { content: ContentItem[] }) {
             ============================================================ */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className={`relative z-50 p-2 md:hidden transition-all duration-500 ${mobileOpen ? "text-foreground scale-110" : scrolled ? "text-foreground" : "text-white"
+          className={`relative z-50 p-2 lg:hidden transition-all duration-500 ${mobileOpen ? "text-foreground scale-110" : scrolled ? "text-foreground" : "text-white"
             }`}
           aria-label={mobileOpen ? "Cerrar menu" : "Abrir menu"}
         >
@@ -127,64 +129,70 @@ export function Navbar({ content }: { content: ContentItem[] }) {
       {/* ============================================================
           MOBILE SIDE-DRAWER MENU (Hidden on Desktop)
           ============================================================ */}
-      <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-500 ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-        onClick={() => setMobileOpen(false)}
-      >
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-xl" />
+      {mobileOpen && typeof document !== 'undefined'
+        ? createPortal(
+            <div
+              style={{ zIndex: 999999 }}
+              className={`fixed inset-0 isolate lg:hidden transition-opacity duration-300 opacity-100 pointer-events-auto`}
+            >
+              <div className="absolute inset-0 bg-black" onClick={() => setMobileOpen(false)} />
 
-        <div
-          className={`absolute right-0 top-0 h-full w-[85%] max-w-sm bg-card p-8 shadow-2xl border-l border-border/50 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="flex h-full flex-col justify-between">
-            <div className="space-y-12">
-              <div className="flex flex-col items-center gap-6 border-b border-border/50 pb-10 mt-16 text-center">
-                <div className="relative h-16 w-16">
-                  <Image src={logoUrl} alt="Logo" fill className="object-contain" />
-                </div>
-                <p className="font-serif text-2xl font-medium text-foreground leading-tight">
-                  {siteName.split(' ')[0]} <span className="text-primary">{siteName.split(' ').slice(1).join(' ')}</span>
-                </p>
-              </div>
-
-              <div className="flex flex-col items-center gap-8">
-                {navLinks.map((link) => (
-                  <button
-                    key={link.href}
-                    onClick={() => handleNavClick(link.href)}
-                    className="group"
-                  >
-                    <span className="font-serif text-3xl text-foreground transition-all group-hover:text-primary">
-                      {link.label}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-8">
-              <Button
-                onClick={() => handleNavClick("#footer")}
-                className="w-full rounded-full bg-foreground h-16 text-[11px] uppercase tracking-[0.3em] font-black text-background shadow-2xl transition-transform hover:scale-105"
+              <div
+                className={`absolute right-0 top-0 h-full w-full bg-black p-8 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between translate-x-0`}
               >
-                Toca para Contactar
-              </Button>
+                  <div className="space-y-12">
+                    <div className="flex flex-col items-center gap-6 border-b border-border/50 pb-10 mt-16 text-center">
+                      <div className="relative h-16 w-16">
+                        <Image src={logoUrl} alt="Logo" fill className="object-contain" />
+                      </div>
+                      <p className="font-serif text-2xl font-medium text-foreground leading-tight">
+                        {siteName.split(' ')[0]} <span className="text-primary">{siteName.split(' ').slice(1).join(' ')}</span>
+                      </p>
+                    </div>
 
-              <div className="flex flex-col items-center pt-6 border-t border-border/50 gap-4">
-                <div className="flex gap-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="h-1.5 w-1.5 rounded-full bg-primary/40" />
-                  ))}
-                </div>
-                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground text-center">
-                  © {new Date().getFullYear()} {siteName}
-                </p>
+                    <div className="flex flex-col items-center gap-8">
+                      {navLinks.map((link) => (
+                        <button
+                          key={link.href}
+                          onClick={() => handleNavClick(link.href)}
+                          className="group"
+                        >
+                          <span className="font-serif text-3xl text-foreground transition-all group-hover:text-primary">
+                            {link.label}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-8">
+                    <Button
+                      onClick={() => {
+                        setMobileOpen(false);
+                        const el = document.querySelector("#footer");
+                        el?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className="w-full rounded-full bg-white h-16 text-[11px] uppercase tracking-[0.3em] font-black text-black shadow-2xl transition-transform hover:scale-105"
+                    >
+                      Toca para Contactar
+                    </Button>
+
+                    <div className="flex flex-col items-center pt-6 border-t border-white/10 gap-4">
+                      <div className="flex gap-4">
+                        {[1, 2, 3].map((i) => (
+                          <div key={i} className="h-1.5 w-1.5 rounded-full bg-primary/40" />
+                        ))}
+                      </div>
+                      <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/50 text-center">
+                        © {new Date().getFullYear()} {siteName}
+                      </p>
+                    </div>
+                  </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </div>,
+            document.body
+          )
+        : null}
     </header>
   )
 }
