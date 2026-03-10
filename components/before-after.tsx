@@ -62,7 +62,7 @@ export function BeforeAfter({ content, transformations }: { content: ContentItem
                         src={item.before_image_url}
                         alt={`${item.name} antes del grooming`}
                         fill
-                        className="luxury-img grayscale"
+                        className="luxury-img"
                       />
                     )}
                     <span className="absolute top-6 left-6 rounded-full bg-black/40 backdrop-blur-md px-4 py-1.5 text-[9px] font-black uppercase tracking-widest text-foreground/70 border border-border/20">
