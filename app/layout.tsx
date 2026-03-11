@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteName = data?.find(c => c.key === 'site_name')?.value || 'Pet Care Studio'
   const tagline = data?.find(c => c.key === 'site_tagline')?.value || 'Peluquería Canina Profesional'
   const desc = data?.find(c => c.key === 'footer_description')?.value || 'Tu mascota merece lo mejor. Servicios profesionales de grooming canino. Agenda tu cita hoy.'
-  const logo = data?.find(c => c.key === 'site_logo_url')?.value || '/icons/logo.webp'
+  const logo = '/icons/logo.webp'
   const keywords = "peluquería canina, grooming, spa para perros, baño y corte, estética de mascotas"
 
   return {

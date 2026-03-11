@@ -36,7 +36,7 @@ export function HeroMobile({
     const isVideo = slogan.media?.endsWith('.mp4') || slogan.media?.includes('video')
 
     return (
-        <section className="relative flex h-[100dvh] flex-col items-center justify-center px-4 overflow-hidden bg-black">
+        <section className="relative flex h-[100svh] min-h-[600px] flex-col items-center justify-center px-4 overflow-hidden bg-black">
             {/* Background Media */}
             <div className="absolute inset-0 z-0">
                 {isVideo ? (
@@ -54,9 +54,11 @@ export function HeroMobile({
             </div>
 
             <div className="relative z-10 flex flex-col items-center text-center w-full h-full justify-center mt-12">
-                <div onClick={handleLogoClick} className="mb-6 mt-16 w-[200px] cursor-pointer animate-in fade-in zoom-in-95 duration-700">
-                    <div className="relative aspect-square drop-shadow-2xl">
-                        <Image src={slogan.logo} alt="Logo" fill className="object-contain" priority />
+                <div onClick={handleLogoClick} className="mb-6 mt-16 w-[250px] cursor-pointer animate-in fade-in zoom-in-95 duration-700">
+                    <div className="floating-element">
+                        <div className="relative aspect-square drop-shadow-2xl">
+                            <Image src={slogan.logo} alt="Logo" fill className="object-contain scale-110" priority />
+                        </div>
                     </div>
                 </div>
 

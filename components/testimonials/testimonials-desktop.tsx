@@ -117,7 +117,7 @@ export function TestimonialsDesktop({ content, testimonials }: { content: Conten
                         </div>
                         <p className="font-serif text-3xl text-foreground font-medium mb-4">Comunidad en crecimiento</p>
                         <p className="text-muted-foreground font-light text-balance text-lg">
-                            Las historias de nuestras experiencias luxury se publicarán aquí muy pronto.
+                            Las historias de nuestras experiencias se publicarán aquí muy pronto.
                         </p>
                     </div>
                 )}

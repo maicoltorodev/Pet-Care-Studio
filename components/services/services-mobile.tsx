@@ -21,7 +21,11 @@ interface ServiceItem {
     price: string
 }
 
-export function ServicesMobile({ services, header }: { services: ServiceItem[], header: any }) {
+export function ServicesMobile({ services, header, phone }: { services: ServiceItem[], header: any, phone: string }) {
+    const getWhatsAppUrl = (serviceTitle: string) => {
+        const message = `Hola, me gustaría agendar el servicio de ${serviceTitle}.`
+        return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+    }
     return (
         <section id="servicios" className="relative py-24 overflow-hidden px-5 bg-background border-b border-white/5">
             {/* Cinematic Glow Effects */}
@@ -48,40 +52,59 @@ export function ServicesMobile({ services, header }: { services: ServiceItem[], 
                         return (
                             <div
                                 key={service.id || service.title}
-                                className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-card/80 backdrop-blur-xl transition-transform active:scale-[0.98]"
+                                className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-card/60 backdrop-blur-xl transition-transform active:scale-[0.98]"
                             >
-                                {/* Imagen del servicio como cover background mitigado en mobile */}
-                                <div className="absolute inset-0 z-0">
-                                    {service.image_url && (
-                                        <>
-                                            <Image
-                                                src={service.image_url}
-                                                alt={service.title}
-                                                fill
-                                                className="object-cover opacity-30"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
-                                        </>
+                                {/* Contenedor de Imagen (Top Half) */}
+                                <div className="relative aspect-[4/3] w-full overflow-hidden bg-black/80 border-b border-white/5">
+                                    {service.image_url ? (
+                                        <Image
+                                            src={service.image_url}
+                                            alt={service.title}
+                                            fill
+                                            className="object-cover opacity-90 transition-transform duration-700 active:scale-105"
+                                        />
+                                    ) : (
+                                        <div
+                                            className="absolute inset-0 flex items-center justify-center opacity-80"
+                                            style={{ background: 'linear-gradient(135deg, var(--color-background) 0%, rgba(200,50,50,0.1) 100%)' }}
+                                        >
+                                            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/5 backdrop-blur-md border border-white/10">
+                                                <IconComponent className="h-8 w-8 text-primary/50" />
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
 
-                                <div className="p-8 relative z-10">
-                                    <div className="flex items-start justify-between mb-8">
-                                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                                            <IconComponent className="h-6 w-6 text-primary" />
+                                {/* Contenedor de Contenido (Bottom Half) */}
+                                <div className="p-6 relative z-10 bg-gradient-to-t from-background/90 to-transparent">
+                                    {/* Icono flotante conector (Superpuesto entre imagen y texto) */}
+                                    {service.image_url && (
+                                        <div className="absolute right-6 -top-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-card border border-white/10 shadow-2xl">
+                                            <IconComponent className="h-5 w-5 text-primary" />
                                         </div>
-                                        <div className="text-right">
-                                            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">Inversión</p>
-                                            <p className="text-xl font-black tracking-tight text-white">{service.price}</p>
+                                    )}
+
+                                    {!service.image_url && (
+                                         <div className="absolute right-6 -top-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 border border-primary/20 shadow-2xl">
+                                            <IconComponent className="h-5 w-5 text-primary" />
+                                        </div>
+                                    )}
+
+                                    <div className="flex items-start justify-between mb-6 mt-2">
+                                        <div>
+                                            <h3 className="font-serif text-[22px] font-medium text-white tracking-tight">{service.title}</h3>
+                                        </div>
+                                        <div className="text-right pl-4">
+                                            <p className="text-[8px] font-black uppercase tracking-[0.2em] text-white/40 mb-1">Inversión</p>
+                                            <p className="text-lg font-black tracking-tight text-white">{service.price}</p>
                                         </div>
                                     </div>
 
-                                    <h3 className="mb-3 font-serif text-2xl font-medium text-white tracking-tight">{service.title}</h3>
-                                    <p className="mb-8 text-white/60 text-sm leading-relaxed">
+                                    <p className="mb-6 text-white/60 text-sm leading-relaxed font-light">
                                         {service.description}
                                     </p>
 
-                                    <ul className="space-y-4 mb-8">
+                                    <ul className="space-y-3 mb-8">
                                         {service.features?.map((feature: string) => (
                                             <li key={feature} className="flex items-start gap-4 text-xs font-medium text-white/80">
                                                 <div className="mt-1 h-1 w-1 rounded-full bg-primary flex-shrink-0" />
@@ -91,10 +114,13 @@ export function ServicesMobile({ services, header }: { services: ServiceItem[], 
                                     </ul>
 
                                     <a
-                                        href="#footer"
-                                        className="flex items-center justify-center w-full h-12 rounded-xl bg-primary text-primary-foreground text-xs font-black tracking-[0.2em] uppercase transition-colors"
+                                        href={getWhatsAppUrl(service.title)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group relative overflow-hidden flex items-center justify-center w-full h-14 bg-primary text-primary-foreground text-[10px] font-black tracking-[0.2em] uppercase rounded-full shadow-lg shadow-primary/40 transition-transform active:scale-95"
                                     >
-                                        Agendar
+                                        <span className="relative z-10">Agendar Experiencia</span>
+                                        <div className="absolute top-0 -left-[100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 animate-[shimmer_3s_infinite]" />
                                     </a>
                                 </div>
                             </div>

@@ -36,7 +36,7 @@ export function HeroTablet({
     const isVideo = slogan.media?.endsWith('.mp4') || slogan.media?.includes('video')
 
     return (
-        <section className="relative flex h-screen min-h-[800px] flex-col overflow-hidden bg-background">
+        <section className="relative flex min-h-[100svh] lg:min-h-[800px] flex-col overflow-hidden bg-background">
             {/* Background Media — en tablet podemos hacerlo sutilmente off-center o asimétrico si el video lo permite, de lo contrario base parallax */}
             <div className="absolute inset-0 z-0">
                 {isVideo ? (
@@ -79,12 +79,12 @@ export function HeroTablet({
                 </div>
 
                 {/* Columna Derecha — Logo Vertical flotante, compensado hacia arriba */}
-                <div className="col-span-4 flex flex-col items-center justify-start h-full pt-32">
+                <div className="col-span-4 flex flex-col items-center justify-start h-full px-0 pt-0">
                     <div onClick={handleLogoClick}
-                        className="w-[280px] cursor-pointer animate-in fade-in zoom-in-95 duration-1000 delay-200">
+                        className="w-[700px] -ml-48 -mt-12 cursor-pointer animate-in fade-in zoom-in-95 duration-1000 delay-200">
                         <div className="floating-element" style={{ animationDuration: '8s' }}>
                             <div className="relative aspect-square drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)]">
-                                <Image src={slogan.logo} alt="Logo" fill className="object-contain" priority />
+                                <Image src={slogan.logo} alt="Logo" fill className="object-contain scale-[1.7]" priority />
                             </div>
                         </div>
                     </div>

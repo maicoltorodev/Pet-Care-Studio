@@ -60,7 +60,7 @@ export function BusinessTab() {
 function BusinessDesktop() {
     const { data, loading, error, fetchAnalytics } = useBusinessData()
     const { content } = useCMS()
-    const logoUrl = content?.find((c: any) => c.key === 'site_logo_url')?.value
+    const logoUrl = '/icons/logo.webp'
 
     if (loading && !data) return <LoadingState logoUrl={logoUrl} />
     if (error && !data) return <ErrorState onRetry={fetchAnalytics} />
@@ -174,7 +174,7 @@ function BusinessDesktop() {
 function BusinessMobile() {
     const { data, loading, error, fetchAnalytics } = useBusinessData()
     const { content } = useCMS()
-    const logoUrl = content?.find((c: any) => c.key === 'site_logo_url')?.value
+    const logoUrl = '/icons/logo.webp'
 
     if (loading && !data) return <LoadingState logoUrl={logoUrl} />
     if (error && !data) return <ErrorState onRetry={fetchAnalytics} />

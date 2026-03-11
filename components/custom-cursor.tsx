@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react"
 import { PawPrint } from "lucide-react"
+import { useBreakpoints } from "@/hooks/use-breakpoints"
 
 export function CustomCursor() {
-    const [isMobile, setIsMobile] = useState(true) // default true to avoid SSR flash
+    const { isTouch } = useBreakpoints()
     const [isHovering, setIsHovering] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
     const cursorRef = useRef<HTMLDivElement>(null)
@@ -12,14 +13,12 @@ export function CustomCursor() {
     const rafRef = useRef<number>(0)
 
     useEffect(() => {
-        const checkMobile = () => {
-            const mobile = window.innerWidth < 1024 || 'ontouchstart' in window
-            setIsMobile(mobile)
-            document.body.classList.toggle("has-custom-cursor", !mobile)
+        if (isTouch) {
+            document.body.classList.remove("has-custom-cursor")
+            return // Si es táctil, salimos silenciosamente y no atamos eventListeners de ratón
         }
 
-        checkMobile()
-        window.addEventListener("resize", checkMobile)
+        document.body.classList.add("has-custom-cursor")
 
         const moveCursor = (e: MouseEvent) => {
             posRef.current = { x: e.clientX, y: e.clientY }
@@ -53,15 +52,14 @@ export function CustomCursor() {
         document.addEventListener("mouseenter", () => setIsVisible(true))
 
         return () => {
-            window.removeEventListener("resize", checkMobile)
             window.removeEventListener("mousemove", moveCursor)
             window.removeEventListener("mouseover", handleMouseOver)
             document.body.classList.remove("has-custom-cursor")
             cancelAnimationFrame(rafRef.current)
         }
-    }, [])
+    }, [isTouch]) // Añadir dependencia para que recalcule si el dispositivo cambia de estado
 
-    if (isMobile) return null
+    if (isTouch) return null // Early return real basado en la capability
 
     return (
         <div

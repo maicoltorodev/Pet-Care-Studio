@@ -21,7 +21,7 @@ interface ServiceItem {
 }
 
 export function Services({ content, services: initialServices }: { content: ContentItem[], services: ServiceItem[] }) {
-  const { isMobile, isTablet, isDesktop } = useBreakpoints()
+  // Breakpoint management is purely CSS via display properties now
 
   const header = {
     title: content.find((c: ContentItem) => c.key === "services_title")?.value || "Cuidado experto para",
@@ -29,13 +29,23 @@ export function Services({ content, services: initialServices }: { content: Cont
     description: content.find((c: ContentItem) => c.key === "services_description")?.value || "Ofrecemos experiencias personalizadas diseñadas para la salud y belleza de tu mejor amigo."
   }
 
+  const rawPhone = content.find((c: ContentItem) => c.key === "footer_phone")?.value || "573183868043"
+  const cleanPhone = rawPhone.replace(/[^0-9]/g, '')
+  const phone = cleanPhone || "573183868043"
+
   const services = initialServices || []
 
   return (
     <>
-      {isMobile && <ServicesMobile services={services} header={header} />}
-      {isTablet && <ServicesTablet services={services} header={header} />}
-      {isDesktop && <ServicesDesktop services={services} header={header} />}
+      <div className="block md:hidden">
+        <ServicesMobile services={services} header={header} phone={phone} />
+      </div>
+      <div className="hidden md:block lg:hidden">
+        <ServicesTablet services={services} header={header} phone={phone} />
+      </div>
+      <div className="hidden lg:block">
+        <ServicesDesktop services={services} header={header} phone={phone} />
+      </div>
     </>
   )
 }

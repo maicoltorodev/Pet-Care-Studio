@@ -49,7 +49,7 @@ export function Navbar({ content }: { content: ContentItem[] }) {
   }
 
   const siteName = getContent('site_name', 'Pet Care Studio')
-  const logoUrl = getContent('site_logo_url', '/icons/logo.webp')
+  const logoUrl = '/icons/logo.webp'
 
   return (
     <header
@@ -140,6 +140,13 @@ export function Navbar({ content }: { content: ContentItem[] }) {
               <div
                 className={`absolute right-0 top-0 h-full w-full bg-black p-8 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col justify-between translate-x-0`}
               >
+                  <button 
+                    onClick={() => setMobileOpen(false)}
+                    className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors duration-300 z-50"
+                  >
+                    <X className="h-8 w-8" />
+                  </button>
+
                   <div className="space-y-12">
                     <div className="flex flex-col items-center gap-6 border-b border-border/50 pb-10 mt-16 text-center">
                       <div className="relative h-16 w-16">

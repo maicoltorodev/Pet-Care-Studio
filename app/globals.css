@@ -99,9 +99,7 @@
     font-style: normal !important;
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
+  /* html scope is empty because smooth scrolling is handled by JS manually to avoid SSR/Hydration jumping bugs */
 
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden;

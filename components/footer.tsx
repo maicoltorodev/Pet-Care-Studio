@@ -44,7 +44,7 @@ export function Footer({ content }: { content: ContentItem[] }) {
 
   const siteName = getContent('site_name', 'Pet Care Studio')
   const tagline = getContent('site_tagline', 'Estética Canina de Alta Gama')
-  const logoUrl = getContent('site_logo_url', '/icons/logo.webp')
+  const logoUrl = '/icons/logo.webp'
   const description = getContent('footer_description', 'Elevamos el estándar de la estética canina a una experiencia de lujo y bienestar completo para tu mascota.')
   const address = getContent('footer_address', 'CRA 15 no.118 78, Bogotá')
   const phone = getContent('footer_phone', '318 386 8043')

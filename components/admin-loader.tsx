@@ -33,8 +33,8 @@ export function AdminLoader({
 
             {/* Logo con animación */}
             <div className={cn(
-                "relative flex items-center justify-center",
-                isFullScreen ? "scale-100" : "scale-75"
+                "relative flex items-center justify-center transition-transform duration-700 ease-out",
+                isFullScreen ? "scale-75 md:scale-100" : "scale-50 md:scale-75"
             )}>
                 {/* Anillo exterior pulsante */}
                 <div className="absolute w-96 h-96 rounded-full border-2 border-primary/30 animate-ping" style={{ animationDuration: '2s' }} />
@@ -55,19 +55,6 @@ export function AdminLoader({
                     />
                 </div>
             </div>
-
-            {label && (
-                <div className="mt-12 text-center space-y-4 relative z-10">
-                    <p className="text-[12px] font-black uppercase tracking-[0.6em] text-white/40 animate-pulse italic-none">
-                        {label}
-                    </p>
-                    <div className="flex items-center justify-center gap-1.5">
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary/40 animate-bounce [animation-delay:-0.3s]" />
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary/60 animate-bounce [animation-delay:-0.15s]" />
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-bounce" />
-                    </div>
-                </div>
-            )}
 
             {/* CSS keyframes */}
             <style>{`

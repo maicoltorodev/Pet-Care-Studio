@@ -15,16 +15,8 @@ export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [logoUrl, setLogoUrl] = useState<string | null>(null)
+    const logoUrl = '/icons/logo.webp'
     const router = useRouter()
-
-    useEffect(() => {
-        async function getLogo() {
-            const { data } = await supabase.from("site_content").select("value").eq("key", "site_logo_url").single()
-            if (data) setLogoUrl(data.value)
-        }
-        getLogo()
-    }, [])
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -60,7 +52,7 @@ export default function LoginPage() {
                 {/* Large Background Brand Element - Cinematic Logo Overlay (Balanced) */}
                 <div className="opacity-[0.08] select-none pointer-events-none transform -rotate-6 scale-[1.44] transition-all duration-1000 ease-out">
                     <img
-                        src={logoUrl || "/icons/logo.webp"}
+                        src={logoUrl ? (logoUrl.startsWith('/') || logoUrl.startsWith('http') ? logoUrl : `/${logoUrl}`) : "/icons/logo.webp"}
                         alt="Brand Background"
                         className="w-[720px] h-auto object-contain filter grayscale brightness-200 contrast-125"
                         onError={(e) => {
@@ -83,7 +75,7 @@ export default function LoginPage() {
                         <span className="text-primary tracking-tighter">Centro de Control</span>
                     </h1>
                     <p className="text-muted-foreground text-lg font-light max-w-sm">
-                        Gestiona la experiencia luxury de tus clientes y sus mascotas.
+                        Gestiona la experiencia de tus clientes y sus mascotas.
                     </p>
                 </div>
 

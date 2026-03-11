@@ -16,28 +16,41 @@ interface ContentItem {
 }
 
 export function Hero({ content }: { content: ContentItem[] }) {
-  const { isMobile, isTablet, isDesktop } = useBreakpoints()
+  // Breakpoints check is now purely CSS-driven for structure. We only keep logic untouched.
 
   const foundTagline = content.find((c) => c.key === "site_tagline")?.value
   const foundDesc = content.find((c) => c.key === "footer_description")?.value
   const foundMedia = content.find((c) => c.key === "hero_media_url")?.value
   const foundCta = content.find((c) => c.key === "hero_button_text")?.value
-  const foundLogo = content.find((c) => c.key === "site_logo_url")?.value
+
+  // Forzar inicio absoluto arriba del todo en la carga inicial
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
+  }, [])
 
   const slogan = {
     main: foundTagline || "Amor incondicional para tu mascota",
     subtitle: foundDesc || "",
     media: foundMedia || "/video.mp4",
     cta: foundCta || "Agendar Experiencia",
-    logo: foundLogo || "/icons/logo.webp"
+    logo: "/icons/logo.webp"
   }
   const scrollToBooking = () => document.getElementById("footer")?.scrollIntoView({ behavior: "smooth" })
 
   return (
     <>
-      {isMobile && <HeroMobile slogan={slogan} scrollToBooking={scrollToBooking} />}
-      {isTablet && <HeroTablet slogan={slogan} scrollToBooking={scrollToBooking} />}
-      {isDesktop && <HeroDesktop slogan={slogan} scrollToBooking={scrollToBooking} />}
+      <div className="block md:hidden">
+        <HeroMobile slogan={slogan} scrollToBooking={scrollToBooking} />
+      </div>
+      <div className="hidden md:block lg:hidden">
+        <HeroTablet slogan={slogan} scrollToBooking={scrollToBooking} />
+      </div>
+      <div className="hidden lg:block">
+        <HeroDesktop slogan={slogan} scrollToBooking={scrollToBooking} />
+      </div>
     </>
   )
 }

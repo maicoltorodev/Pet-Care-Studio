@@ -21,7 +21,11 @@ interface ServiceItem {
     price: string
 }
 
-export function ServicesDesktop({ services, header }: { services: ServiceItem[], header: any }) {
+export function ServicesDesktop({ services, header, phone }: { services: ServiceItem[], header: any, phone: string }) {
+    const getWhatsAppUrl = (serviceTitle: string) => {
+        const message = `Hola, me gustaría agendar el servicio de ${serviceTitle}.`
+        return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+    }
     return (
         <section id="servicios" className="cinematic-section border-b border-white/5 py-32">
             {/* Cinematic Glow Effects */}
@@ -108,17 +112,22 @@ export function ServicesDesktop({ services, header }: { services: ServiceItem[],
                                             </ul>
                                         </div>
 
-                                        <div className="pt-8 border-t border-border/20 flex items-center justify-between">
+                                        <div className="pt-8 mt-auto border-t border-border/20 flex flex-col gap-6">
                                             <div>
                                                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-1.5">Inversión Base</p>
                                                 <p className="text-2xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors duration-300">{service.price}</p>
                                             </div>
-                                            <a
-                                                href="#footer"
-                                                className="inline-flex items-center justify-center rounded-full h-14 w-14 bg-secondary/40 border border-border/40 text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 group-hover:rotate-45"
-                                            >
-                                                <DollarSign className="h-6 w-6" />
-                                            </a>
+                                            <div className="flex justify-center w-full">
+                                                <a
+                                                    href={getWhatsAppUrl(service.title)}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="group/btn relative overflow-hidden flex items-center justify-center w-full bg-foreground text-background hover:bg-transparent hover:text-white border-2 border-transparent hover:border-white h-14 text-[11px] font-black tracking-[0.2em] uppercase rounded-full shadow-2xl transition-all duration-500 hover:scale-[1.02]"
+                                                >
+                                                    <span className="relative z-10">Agendar</span>
+                                                    <div className="absolute inset-0 bg-primary translate-y-[100%] transition-transform duration-500 group-hover/btn:translate-y-0" />
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -132,7 +141,7 @@ export function ServicesDesktop({ services, header }: { services: ServiceItem[],
                         </div>
                         <p className="font-serif text-3xl text-foreground font-medium mb-4">Catálogo en actualización</p>
                         <p className="text-muted-foreground font-light text-balance text-lg">
-                            Estamos preparando nuestras nuevas experiencias luxury para tu mascota. Por favor revisa más tarde o contáctanos directamente.
+                            Estamos preparando nuestras nuevas experiencias para tu mascota. Por favor revisa más tarde o contáctanos directamente.
                         </p>
                     </div>
                 )}

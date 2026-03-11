@@ -74,6 +74,30 @@ function CinematicBg() {
     )
 }
 
+/* ─── Logout Modal ────────────────────────────────────────── */
+function LogoutConfirmModal({ isOpen, onClose, onConfirm }: { isOpen: boolean, onClose: () => void, onConfirm: () => void }) {
+    if (!isOpen) return null
+    return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-300" onClick={onClose} />
+            <div className="bg-[#080809] border border-white/10 rounded-[2rem] p-8 max-w-sm w-full shadow-2xl relative z-10 animate-in zoom-in-95 fade-in duration-300 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-rose-500/50 to-transparent" />
+                <div className="flex flex-col items-center text-center mb-8">
+                    <div className="h-14 w-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-6">
+                        <LogOut className="h-6 w-6 text-rose-500" />
+                    </div>
+                    <h3 className="text-xl font-black text-white mb-2 tracking-tight italic-none">¿Cerrar Sesión?</h3>
+                    <p className="text-xs text-white/40 font-medium leading-relaxed italic-none">Deberás volver a ingresar con tus credenciales de autorización administrativa.</p>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <button onClick={onConfirm} className="w-full py-4 rounded-xl font-black bg-rose-500/10 text-rose-500 border border-rose-500/20 hover:bg-rose-500 hover:text-white transition-all text-xs tracking-[0.2em] uppercase">Desconectar</button>
+                    <button onClick={onClose} className="w-full py-4 rounded-xl font-black text-white/40 hover:text-white hover:bg-white/5 transition-all text-xs tracking-[0.2em] uppercase border border-transparent">Mantener Sesión</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 /* ══════════════════════════════════════════════════════════
    DESKTOP LAYOUT
 ══════════════════════════════════════════════════════════ */
@@ -84,9 +108,11 @@ function AdminDesktop({ activeTab, setActiveTab, handleLogout, logoUrl }: {
     logoUrl?: string
 }) {
     const [isConfigOpen, setIsConfigOpen] = useState(false)
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
 
     return (
         <div className="flex min-h-screen bg-background selection:bg-primary/20 text-foreground overflow-hidden">
+            <LogoutConfirmModal isOpen={showLogoutConfirm} onClose={() => setShowLogoutConfirm(false)} onConfirm={handleLogout} />
             <CinematicBg />
 
             {/* Sidebar */}
@@ -155,7 +181,7 @@ function AdminDesktop({ activeTab, setActiveTab, handleLogout, logoUrl }: {
 
                     <div className="pt-8 border-t border-white/5 mt-8">
                         <button
-                            onClick={handleLogout}
+                            onClick={() => setShowLogoutConfirm(true)}
                             className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-all duration-500 group"
                         >
                             <LogOut className="h-5 w-5 opacity-40 group-hover:opacity-100 transition-opacity" />
@@ -189,6 +215,7 @@ function AdminMobile({ activeTab, setActiveTab, handleLogout, logoUrl }: {
     logoUrl?: string
 }) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
 
     const currentMainTab = mainTabs.find(t => t.id === activeTab)
     const currentConfigTab = configTabs.find(t => t.id === activeTab)
@@ -196,23 +223,24 @@ function AdminMobile({ activeTab, setActiveTab, handleLogout, logoUrl }: {
 
     return (
         <div className="flex flex-col min-h-screen bg-background selection:bg-primary/20 text-foreground">
+            <LogoutConfirmModal isOpen={showLogoutConfirm} onClose={() => setShowLogoutConfirm(false)} onConfirm={handleLogout} />
             <CinematicBg />
 
             {/* ── Top Bar ── */}
             <header className="fixed top-0 left-0 right-0 z-40 h-16 bg-black/60 backdrop-blur-2xl border-b border-white/[0.06] flex items-center justify-between px-5">
                 <div className="flex items-center gap-3">
                     {logoUrl
-                        ? <img src={logoUrl} alt="Logo" className="h-7 w-auto object-contain" />
+                        ? <img src={logoUrl.startsWith('/') || logoUrl.startsWith('http') ? logoUrl : `/${logoUrl}`} alt="Logo" className="h-7 w-auto object-contain filter drop-shadow-md brightness-110" />
                         : <div className="h-7 w-7 rounded-xl bg-primary/20 flex items-center justify-center"><span className="text-primary text-[10px] font-black">PC</span></div>
                     }
                     <span className="font-black text-white text-[15px] tracking-tight" style={{ fontStyle: 'normal' }}>{currentTabLabel}</span>
                 </div>
 
                 <button
-                    onClick={handleLogout}
-                    className="h-9 w-9 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-white/40"
+                    onClick={() => setShowLogoutConfirm(true)}
+                    className="h-9 w-9 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-white/40 group transition-all duration-300 hover:bg-rose-500/10 hover:text-rose-500"
                 >
-                    <LogOut className="h-4 w-4" />
+                    <LogOut className="h-4 w-4 transition-transform group-hover:scale-110" />
                 </button>
             </header>
 
@@ -322,11 +350,10 @@ function AdminDashboardInner() {
     }
 
     if (loading) {
-        const logoUrl = content?.find((c: { key: string; value: string }) => c.key === 'site_logo_url')?.value
-        return <AdminLoader logoUrl={logoUrl} />
+        return <AdminLoader logoUrl="/icons/logo.webp" />
     }
 
-    const logoUrl = content?.find((c: { key: string; value: string }) => c.key === 'site_logo_url')?.value
+    const logoUrl = '/icons/logo.webp'
 
     if (isMobile) {
         return <AdminMobile activeTab={activeTab} setActiveTab={setActiveTab} handleLogout={handleLogout} logoUrl={logoUrl} />
@@ -341,11 +368,11 @@ function AdminDashboardInner() {
 export default function AdminDashboard() {
     const { loading } = useAdminAuth()
 
-    if (loading) return <div className="h-screen w-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>
+    if (loading) return <AdminLoader logoUrl="/icons/logo.webp" isFullScreen={true} label="Cargando sistema base..." />
 
     return (
         <AdminProviders>
-            <React.Suspense fallback={<div className="h-screen w-screen flex items-center justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>}>
+            <React.Suspense fallback={<AdminLoader logoUrl="/icons/logo.webp" isFullScreen={true} label="Sincronizando..." />}>
                 <AdminDashboardInner />
             </React.Suspense>
         </AdminProviders>

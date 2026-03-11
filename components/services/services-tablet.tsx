@@ -21,7 +21,11 @@ interface ServiceItem {
     price: string
 }
 
-export function ServicesTablet({ services, header }: { services: ServiceItem[], header: any }) {
+export function ServicesTablet({ services, header, phone }: { services: ServiceItem[], header: any, phone: string }) {
+    const getWhatsAppUrl = (serviceTitle: string) => {
+        const message = `Hola, me gustaría agendar el servicio de ${serviceTitle}.`
+        return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+    }
     return (
         <section id="servicios" className="cinematic-section border-b border-white/5 py-24 px-8 overflow-hidden">
             {/* Ambient Background for Tablet */}
@@ -109,11 +113,13 @@ export function ServicesTablet({ services, header }: { services: ServiceItem[], 
                                         
                                         <div className="mt-auto pt-8">
                                              <a
-                                                href="#footer"
-                                                className="inline-flex items-center gap-4 h-14 px-8 rounded-full bg-transparent border-2 border-primary/30 text-white text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 hover:bg-primary hover:border-primary"
+                                                href={getWhatsAppUrl(service.title)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="group relative overflow-hidden inline-flex items-center justify-center bg-primary text-white border-none h-14 px-8 text-[11px] font-black tracking-[0.2em] uppercase rounded-xl shadow-2xl transition-all duration-300 hover:scale-[1.02]"
                                             >
-                                                <span>Agendar Cita</span>
-                                                <div className="w-8 h-px bg-white/50" />
+                                                <span className="relative z-10">Agendar Cita</span>
+                                                <div className="absolute inset-0 bg-white/20 -translate-x-full transition-transform duration-700 ease-out group-hover:translate-x-0 skew-x-12" />
                                             </a>
                                         </div>
                                     </div>
