@@ -45,46 +45,80 @@ export function TestimonialsMobile({ content, testimonials }: { content: Content
 
             {testimonials.length > 0 ? (
                 <div className="flex flex-col gap-8">
-                    {testimonials.map((testimonial) => (
+                    {testimonials.map((testimonial, index) => (
                         <div
                             key={testimonial.id}
-                            className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-card/80 backdrop-blur-xl p-8"
+                            className="group cinematic-card rounded-[2rem] overflow-hidden border border-white/10 bg-card/80 backdrop-blur-xl"
+                            style={{ animationDelay: `${index * 100}ms` }}
                         >
-                            <div className="flex justify-between items-start mb-6">
-                                <Quote className="h-6 w-6 text-primary/40" />
-                                <div className="flex gap-1 bg-black/40 px-3 py-1.5 rounded-full border border-white/10">
-                                    {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
-                                        <Star key={i} className="h-3 w-3 fill-[#f59e0b] text-[#f59e0b]" />
-                                    ))}
-                                </div>
-                            </div>
-
-                            <p className={`font-light leading-relaxed text-white/80 mb-8 w-full ${testimonial.content?.length > 150 ? 'text-sm' : 'text-base'}`}>
-                                {`"${testimonial.content || ''}"`}
-                            </p>
-
-                            <div className="flex items-center gap-4 pt-6 border-t border-white/10">
+                            {/* Imagen grande como desktop */}
+                            <div className="relative aspect-[16/10] w-full overflow-hidden bg-black/60">
                                 {testimonial.image_url ? (
-                                    <div className="relative h-12 w-12 rounded-full overflow-hidden border border-primary/30">
+                                    <>
                                         <Image
                                             src={testimonial.image_url}
-                                            alt={testimonial.pet_name}
+                                            alt={`Resultado de ${testimonial.pet_name || 'mascota'}`}
                                             fill
                                             className="object-cover"
                                         />
-                                    </div>
+                                        <div className="absolute bottom-4 left-4 z-10">
+                                            <div className="flex gap-1 p-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
+                                                {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
+                                                    <Star key={i} className="h-3 w-3 fill-[#f59e0b] text-[#f59e0b]" />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </>
                                 ) : (
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/50 border border-border/20">
-                                        <span className="font-serif text-xl font-medium text-foreground/50">
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center opacity-80"
+                                        style={{ background: 'linear-gradient(135deg, var(--color-background) 0%, var(--color-card) 100%)' }}>
+                                        <span className="font-serif text-6xl font-medium text-foreground/10 leading-none select-none">
                                             {testimonial.client_name?.[0]?.toUpperCase() ?? '?'}
                                         </span>
+                                        <div className="flex gap-1 p-2 rounded-full bg-secondary/30 backdrop-blur-md border border-white/20">
+                                            {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
+                                                <Star key={i} className="h-3 w-3 fill-primary/50 text-primary/50" />
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
-                                <div>
-                                    <p className="font-serif text-lg font-medium text-white leading-none mb-1">{testimonial.client_name}</p>
-                                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">
-                                        {testimonial.pet_name} • {testimonial.pet_breed}
-                                    </p>
+                            </div>
+
+                            {/* Contenido del testimonio */}
+                            <div className="p-6">
+                                <div className="mb-4 text-primary/30">
+                                    <Quote className="h-6 w-6 fill-current" />
+                                </div>
+
+                                <p className={`font-light leading-relaxed text-white/80 mb-6 ${testimonial.content?.length > 150 ? 'text-sm' : 'text-base'}`}>
+                                    {`"${testimonial.content || ''}"`}
+                                </p>
+
+                                <div className="flex items-center gap-4 pt-4 border-t border-white/10">
+                                    <div className="flex items-center gap-3">
+                                        {testimonial.image_url ? (
+                                            <div className="relative h-10 w-10 rounded-full overflow-hidden border border-primary/30">
+                                                <Image
+                                                    src={testimonial.image_url}
+                                                    alt={testimonial.pet_name}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary/50 border border-border/20">
+                                                <span className="font-serif text-sm font-medium text-foreground/50">
+                                                    {testimonial.client_name?.[0]?.toUpperCase() ?? '?'}
+                                                </span>
+                                            </div>
+                                        )}
+                                        <div>
+                                            <p className="font-serif text-base font-medium text-white leading-none">{testimonial.client_name}</p>
+                                            <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary">
+                                                {testimonial.pet_name} • {testimonial.pet_breed}
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

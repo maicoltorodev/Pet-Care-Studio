@@ -19,8 +19,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const logo = '/icons/logo.webp'
   const keywords = "peluquería canina, grooming, spa para perros, baño y corte, estética de mascotas"
 
+  const baseUrl = process.env.SITE_URL || 'https://petcarestudio.vercel.app'
+
   return {
-    metadataBase: new URL(process.env.SITE_URL || 'https://petcarestudio.vercel.app'),
+    metadataBase: new URL(baseUrl),
     title: {
       default: `${siteName} | ${tagline}`,
       template: `%s | ${siteName}`,
@@ -31,14 +33,21 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: siteName,
       description: desc,
-      images: [],
+      images: [
+        {
+          url: '/opengraph-image',
+          width: 1200,
+          height: 630,
+          alt: `${siteName} | ${tagline}`,
+        },
+      ],
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: siteName,
       description: desc,
-      images: [],
+      images: ['/twitter-image'],
     },
     icons: {
       icon: [
@@ -50,7 +59,7 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
     },
     other: {
-      "og:logo": "https://www.inzidium.com/public/icons/icon.png",
+      "og:logo": `${baseUrl}/icons/logo.webp`,
     },
   }
 }

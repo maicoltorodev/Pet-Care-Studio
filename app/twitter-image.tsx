@@ -1,6 +1,4 @@
 import { ImageResponse } from 'next/og'
-import { readFileSync } from 'fs'
-import { join } from 'path'
 
 export const runtime = 'nodejs'
 
@@ -13,10 +11,6 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image() {
-    const logoPath = join(process.cwd(), 'public/icons/logo.webp')
-    const logoData = readFileSync(logoPath)
-    const logoBase64 = `data:image/png;base64,${logoData.toString('base64')}`
-
     return new ImageResponse(
         (
             <div
@@ -84,7 +78,7 @@ export default async function Image() {
                         }}
                     >
                         <img
-                            src={logoBase64}
+                            src={`https://petcarestudio.vercel.app/icons/icon.png`}
                             alt="Pet Care Studio Logo"
                             width="432"
                             height="432"
